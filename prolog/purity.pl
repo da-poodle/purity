@@ -26,7 +26,7 @@
 
 % if(Goal, TrueGoal, FalseGoal).
 %
-% Goal is a callable with the last argument as a pbool.
+% Goal is a callable with the last argument as a boolean (true or false).
 % if Goal results in true then TrueGoal is called.
 % if Goal results in false then FalseGoal is called.
 %

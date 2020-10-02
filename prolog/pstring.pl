@@ -1,5 +1,6 @@
 
 :- module(pstring, [
+        
     pchar/1,
     pchar_upper/2,
     pchar_lower/2,
