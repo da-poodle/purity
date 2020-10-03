@@ -37,21 +37,6 @@ pif(Goal, TrueGoal, FalseGoal) :-
 pif_(true, Goal, _) :- call(Goal).
 pif_(false, _, Goal) :- call(Goal).
 
-'='(A, B, R) :-
-    pcompare(_, A, B, C), eq_(C, R).
-
-'<'(A, B, R) :-
-    pcompare(_, A, B, C), lt_(C, R).
-
-'=<'(A, B, R) :-
-    pcompare(_, A, B, C), lte_(C, R).
-
-'>'(A, B, R) :-
-    pcompare(_, A, B, C), gt_(C, R).
-
-'>='(A, B, R) :-
-    pcompare(_, A, B, C), gte_(C, R).
-
 ','(A, B, R) :-
     call(A, T),
     conj_(T, B, R).
