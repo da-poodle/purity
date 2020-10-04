@@ -16,6 +16,9 @@
     gte/4    
 ]).
 
+:- reexport([pchar, plist, pstring, punary]).
+
+
 % pcompare(Domain, TermA, TermB, Comparator) - 
 %
 % Comparator is one of <, > or =

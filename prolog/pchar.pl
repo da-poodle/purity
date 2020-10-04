@@ -1,3 +1,14 @@
+:- module(pchar, [
+   pchar/1,
+   pchar_upper/2,
+   pchar_lower/2,
+   ch_map/3,
+   ch/3,
+   pchar_type/2,
+   pchar_code/2,
+   pdif_char/3
+]).
+
 % pchar(Char).
 %
 % Char is a character in the pchar domain.

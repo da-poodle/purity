@@ -22,7 +22,7 @@
 ]).
 
 :- use_module(purity).
-:- include(pchar).
+:- use_module(pchar).
 
 :- multifile purity:pcompare/4.
 
