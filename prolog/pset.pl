@@ -3,7 +3,9 @@
     list_set/3,
     set_list/2,
     subset/3,
-    punion/3
+    punion/3,
+    pdifference/3,
+    pintersection/3
 ]).
 
 :- use_module(purity).
@@ -66,7 +68,7 @@ punion_([],B,B,_).
 punion_([A|At],B,R,D) :-
     punion_1(B,[A|At],R,D).
 
-punion_1([],B,B,_).
+punion_1([],A,A,_).
 punion_1([B|Bt],[A|At],R,D) :-
     pcompare(D,A,B,C),
     punion_c(C,[A|At],[B|Bt],R,D).
@@ -79,41 +81,46 @@ punion_c(>,[A|At],[B|Bt],[B|R],D) :-
     punion_([A|At],Bt,R,D).
 
 
-% subtract/3
-/*
-psubtract([],B,B).
-psubtract([_|_],[],[]).
-psubtract([A|At],[A|Bt],R) :-
-    psubtract(At,Bt,R).
-psubtract([A|At],[B|Bt],[B|R]) :-
-    pcompare(>,A,B),
-    psubtract([A|At],Bt,R).
-psubtract([A|At],[B|Bt],[B|R]) :-
-    pcompare(<,A,B),
-    psubtract([A|At],Bt,R).
-*/
+% difference(Set1, Set2, Set3).
+%
+% Set3 is Set1 - Set2
+%
+pdifference(set(D,S1),set(D,S2),set(D,S3)) :-
+    pdifference_(S1,S2,S3,D).
+ 
+pdifference_([],_,[],_).
+pdifference_([A|At],B,R,D) :-
+    pdifference_1(B,[A|At],R,D).
 
-/*
-% intersection/3
-pintersection([],_,[]).
-pintersection(_,[],[]).
-pintersection([A|At],[B|Bt],R) :-
-	pcompare(C,A,B),
-	pintersection_(C,A,B,At,Bt,R).
+pdifference_1([],A,A,_).
+pdifference_1([B|Bt],[A|At],R,D) :-
+    pcompare(D,A,B,C),
+    pdifference_c(C,[A|At],[B|Bt],R,D).
 
-pintersection_(=,A,A,At,Bt,[A|R]) :-
-	pintersection(At,Bt,R).
-pintersection_(<,A,_,At,Bt,R) :-
-	pintersection([A|At],Bt,R).
-pintersection_(>,_,B,At,Bt,R) :-
-	pintersection(At,[B|Bt],R).
+pdifference_c(=,[A|At],[A|Bt],R,D) :- 
+    pdifference_(At,Bt,R,D).
+pdifference_c(<,[A|At],[B|Bt],[A|R],D) :- 
+    pdifference_(At,[B|Bt],R,D).
+pdifference_c(>,[A|At],[_|Bt],[A|R],D) :- 
+    pdifference_([A|At],Bt,R,D).
 
-pintersection([A|At],[A|Bt],[A|R]) :-
-    pintersection(At,Bt,R).
-pintersection([A|At],[B|Bt],R) :-
-    pcompare(A,B,gt),
-    pintersection(At,[B|Bt],R).
-pintersection([A|At],[B|Bt],R) :-
-    pcompare(A,B,lt),
-    pintersection([A|At],Bt,R).
-*/
+
+% pintersection/3
+pintersection(set(D,S1),set(D,S2),set(D,S3)) :-
+    pintersection_(S1,S2,S3,D).
+ 
+pintersection_([],_,[],_).
+pintersection_([A|At],B,R,D) :-
+    pintersection_1(B,[A|At],R,D).
+
+pintersection_1([],_,[],_).
+pintersection_1([B|Bt],[A|At],R,D) :-
+    pcompare(D,A,B,C),
+    pintersection_c(C,[A|At],[B|Bt],R,D).
+
+pintersection_c(=,[A|At],[A|Bt],[A|R],D) :- 
+    pintersection_(At,Bt,R,D).
+pintersection_c(<,[_|At],[B|Bt],R,D) :- 
+    pintersection_(At,[B|Bt],R,D).
+pintersection_c(>,[A|At],[_|Bt],R,D) :- 
+    pintersection_([A|At],Bt,R,D).
