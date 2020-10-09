@@ -11,7 +11,10 @@
 :- use_module(purity).
 
 
-% p_is_set/1
+% pset_empty(Domain, Set).
+%
+% Set is the empty set for Domain.
+%
 pset_empty(Domain, set(Domain, [])).
 
 % subset(SubSet, Set, Truth)
@@ -37,7 +40,10 @@ subset_c(>,Sub,[_|Set],D,T) :-
     subset_(Sub,Set,D,T).
 
 % list_set(Domain, List, Set).
-
+%
+% List is a list of elements in Domain. 
+% Set is the set version of List. 
+%
 list_set(D, L, set(D, Set)) :-
     psort(D,L,B),
     remove_dups_sorted(B,D,Set).
@@ -60,7 +66,10 @@ remove_dups_sorted_(false,[A,A|T],D,R) :-
 set_list(set(_, List), List).
 
 
-% punion/3
+% punion(Set1, Set2, Unioned).
+%
+% Unioned is the union between Set1 and Set2
+%
 punion(set(D,S1),set(D,S2),set(D,S3)) :-
     punion_(S1,S2,S3,D).
  
@@ -105,7 +114,10 @@ pdifference_c(>,[A|At],[_|Bt],[A|R],D) :-
     pdifference_([A|At],Bt,R,D).
 
 
-% pintersection/3
+% pintersection(Set1, Set2, Intersection).
+%
+% Intersection is the intersection of Set1 and Set2.
+% 
 pintersection(set(D,S1),set(D,S2),set(D,S3)) :-
     pintersection_(S1,S2,S3,D).
  
