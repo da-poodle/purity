@@ -1,5 +1,4 @@
 :- module(pchar, [
-   pchar/1,
    pchar_upper/2,
    pchar_lower/2,
    ch_map/3,
@@ -11,13 +10,9 @@
 
 :- multifile(domain/3).
 
-purity:domain(pchar, Val, pchar(Val)).
-
-% pchar(Char).
-%
 % Char is a character in the pchar domain.
-pchar(pchar(C)) :-
-    ch(C,C,=).
+purity:domain(pchar, Val, pchar(Val)) :-
+    ch(Val, Val, =).
 
 % pdif_char(CharA, CharB, IsDifferent).
 %

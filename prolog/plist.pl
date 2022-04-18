@@ -17,9 +17,12 @@
 
 :- use_module(purity).
 
-:- multifile purity:pcompare/4.
+:- multifile purity:pcompare/3.
 
-purity:pcompare(plist(D), A, B, C) :- plist_compare(A, B, C, D). 
+purity:pcompare(A, B, C) :- 
+    domain(list(D), _, A),
+    domain(list(D), _, B),
+    plist_compare(A, B, C, D). 
 
 /*
 % member/2
@@ -106,7 +109,7 @@ plist_compare_0([_|_], <).
 
 plist_compare_1([], _, >, _).
 plist_compare_1([A|T1], [B|T2], C, D) :-
-        pcompare(D, B, A, TC), 
+        pcompare(B, A, TC), 
         plist_compare_cond(TC, T2, T1, C, D).
 
 plist_compare_cond(<, _, _, <, _).
