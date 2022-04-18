@@ -23,11 +23,14 @@
 
 :- use_module(purity).
 :- use_module(pchar).
+:- use_module(plist).
 
-:- multifile purity:pcompare/4.
+:- multifile purity:pcompare/3.
 
-purity:pcompare(pstring, A, B, C) :- pcompare(plist(pchar), A, B, C).
-purity:pcompare(pchar, A, B, C) :- ch(A, B, C). 
+purity:pcompare(A, B, C) :- 
+        in_dom
+        pcompare(plist(pchar), A, B, C).
+purity:pcompare(A, B, C) :- ch(A, B, C). 
 
 
 % pstr_empty(Str).

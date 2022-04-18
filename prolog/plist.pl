@@ -9,7 +9,6 @@
     ppartition/4,
     pinclude/3,
     pexclude/3,
-    list_in_domain/2,
     non_member/3,
     remove_dups/2,
     list_join/3,
@@ -155,22 +154,6 @@ pnth1(c(c(Z)), V, [_|T]) :-
     pnth1(c(Z), V, T).
 
 
-% list_in-domain(Domain, List).
-%
-% Holds if all elements of List are in Domain.
-%
-% D = Domain
-% L = List
-% A = an element of List
-% T = the tail of List
-%
-list_in_domain_( [], _ ).
-list_in_domain_( [A|T], D ) :- 
-	pcompare( D, A, A, = ),
-	list_in_domain_( T, D ).
-
-list_in_domain( D, L ) :- 
-    list_in_domain( L, D ).
 
 
 % pmemberchk(Domain, Element, List).

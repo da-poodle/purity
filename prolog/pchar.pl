@@ -9,10 +9,14 @@
    pdif_char/3
 ]).
 
+:- multifile(domain/3).
+
+purity:domain(pchar, Val, pchar(Val)).
+
 % pchar(Char).
 %
 % Char is a character in the pchar domain.
-pchar(C) :-
+pchar(pchar(C)) :-
     ch(C,C,=).
 
 % pdif_char(CharA, CharB, IsDifferent).
