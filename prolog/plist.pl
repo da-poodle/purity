@@ -1,28 +1,36 @@
 % List Library
 :- module(plist, [
+    domain_list_call/3,
+    domain_list_call/4,
     plist/1,
     plength/2,
     pnth0/3,
     pnth1/3,
-    pmemberchk/3,    
+    pmember/3,
+    pmemberchk/2,    
     psublist/5,
+    pfilter/3,
     ppartition/4,
     pinclude/3,
     pexclude/3,
-    non_member/3,
+    non_member/2,
     remove_dups/2,
     list_join/3,
-    psort/3
+    psort/3,
+    psort/2
 ]).
 
 :- use_module(purity).
 
-:- multifile purity:pcompare/3.
+domain_list_call(Goal, ListIn, ListOut) :-
+    maplist(domain, ListIn, CallList),
+    call(Goal, CallList, ResultList),
+    maplist(domain, ListOut, ResultList).
 
-purity:pcompare(A, B, C) :- 
-    domain(list(D), _, A),
-    domain(list(D), _, B),
-    plist_compare(A, B, C, D). 
+domain_list_call(Goal, Domain, ListIn, ListOut) :-
+    maplist(domain(Domain), ListIn, CallList),
+    call(Goal, CallList, ResultList),
+    maplist(domain(Domain), ListOut, ResultList).
 
 /*
 % member/2
@@ -46,12 +54,11 @@ select(C, [A|B], D, [A|E]) :-
     select(C, B, D, E).
 
 % reverse/2
-reverse(A,B) :-
-    reverse(A,[],B).
+% solution taken from https://courses.cs.washington.edu/courses/cse341/10wi/clpr/difference_lists.clpr
+preverse(Xs,Rs) :- reverse_dl(Xs,Rs-[]).
 
-reverse([], A, A).
-reverse([B|A], C, R) :-
-    reverse(A, [B|C], R).
+reverse_dl([],T-T).
+reverse_dl([X|Xs],Rs-T) :- reverse_dl(Xs,Rs-[X|T]).
 
 % permutation/2
 permutation([],[]).
@@ -83,39 +90,6 @@ psame_length([_|A],[_|B]) :-
 %
 plist([]).
 plist([_|_]).
-
-
-% plist_compare(List1, List2, Comparator, Domain).
-%
-% compare two lists of type 'Domain' 
-% Comparator contains either =, < or >.
-% comparisons are in relation to the first list
-% eg: if List1 = 3 and List2 = 4 then List1 < List2
-%
-% D = domain
-% C = the comparator operator
-% A = list1 element to compare
-% B = list2 element to compare
-% T1 = tail of list1
-% T2 = tail of list2
-% S = list2
-% TC = temporary compartor
-%
-plist_compare([],S,C, _) :- plist_compare_0(S, C).
-plist_compare([A|T1], S, C, D) :- plist_compare_1(S, [A|T1], C, D).
-
-plist_compare_0([], =).
-plist_compare_0([_|_], <).
-
-plist_compare_1([], _, >, _).
-plist_compare_1([A|T1], [B|T2], C, D) :-
-        pcompare(B, A, TC), 
-        plist_compare_cond(TC, T2, T1, C, D).
-
-plist_compare_cond(<, _, _, <, _).
-plist_compare_cond(>, _, _, >, _).
-plist_compare_cond(=, T1, T2, C, D) :- 
-        plist_compare(T1, T2, C, D).
 
 
 % plength(List, Length).
@@ -157,13 +131,24 @@ pnth1(c(c(Z)), V, [_|T]) :-
     pnth1(c(Z), V, T).
 
 
+% pmember(Element, List, Truth).
+%
+% Truth is true if List containst Element otherwise false
+%
+pmember(Element, List, Truth) :-
+   pmember_(List, Element, Truth).
 
+pmember_([], _, false).
+pmember_([X|Xs], Element, Truth) :-
+   pif( eq(X, Element), 
+        Truth = true, 
+        pmember_(Xs, Element, Truth) 
+    ).
 
-% pmemberchk(Domain, Element, List).
+% pmemberchk(Element, List).
 %
 % check if Element exists in List once only.
 %
-% D = Domain
 % A = Element 
 % L = List
 % B = an element of List that doesn't match Element
@@ -171,33 +156,32 @@ pnth1(c(c(Z)), V, [_|T]) :-
 % C = the comparison operator
 %
 pmemberchk_(=,_,_,_).
-pmemberchk_(>,A,L,D) :-
-	pmemberchk(D,A,L).
-pmemberchk_(<,A,L,D) :-
-	pmemberchk(D,A,L).
+pmemberchk_(>,A,L) :-
+	pmemberchk(A,L).
+pmemberchk_(<,A,L) :-
+	pmemberchk(A,L).
 
-pmemberchk(D, A,[B|T]) :-
-	pcompare(D, A, B, C ),
-	pmemberchk_(C,A,T,D).
+pmemberchk(A,[B|T]) :-
+	pcompare(A, B, C ),
+	pmemberchk_(C,A,T).
 
 
-% non_member(Domain, Element, List).
+% non_member(Element, List).
 %
 % Holds if Element is not an element in List.
 % the Element and List must be a member of Domain.
 %
-% D = Domain
 % L = List
 % A = Element
 % B = an element of List that is different to Element
 % T = the tail of List
 %
-non_member(D, A, L) :- non_member_(L, A, D).
+non_member(A, L) :- non_member_(L, A).
 
-non_member_([], _, _).
-non_member_([A|T], B, D) :-
-	pdif(D, A, B),
-	non_member_(T, B, D).
+non_member_([], _).
+non_member_([A|T], B) :-
+	pdif(A, B),
+	non_member_(T, B).
 
 
 % psublist(List, Before, Length, After, SubList).
@@ -245,7 +229,7 @@ remove_dups([A|T],R) :-
 	member(A,T),
 	remove_dups(T,R).
 remove_dups([A|T],[A|R]) :-
-	non_member(_,A,T),
+	non_member(A,T),
 	remove_dups(T,R).
 
 
@@ -277,6 +261,22 @@ list_join2([E2|T], E, Prev, Dl, Rl) :-
     append(PrevE, Dl, Joined),
     list_join([E2|T], Joined, Dl, Rl).
 
+
+% pfilter(Goal, Elements, Filtered).
+%
+% adapted from https://github.com/mthom/scryer-prolog/blob/master/src/lib/reif.pl
+%
+% Goal - the goal to call, must have the last element return true/false.
+% Elements - the List to filter.
+% Filtered - the filtered list.
+%
+pfilter(Goal, Elements, Filtered) :-
+   pfilter_(Elements, Goal, Filtered).
+
+pfilter_([], _, []).
+pfilter_([E|Es], Goal, Filtered) :-
+   pif(call(Goal, E), Filtered = [E|Fs], Filtered = Fs),
+   pfilter_(Es, Goal, Fs).
 
 % ppartition(Goal, List, Included, Excluded).
 %
@@ -340,18 +340,22 @@ pexclude(G, L, E) :-
 %
 psort(D, L, S) :-
 	same_length(L, S),
-	psort_(L, S, D).
+    domain_list_call(psort_, D, L, S).
 
-psort_([], [], _).
-psort_([A|T], S, D) :-
-    psort_1(T, A, S, D).
+psort(L, S) :-
+	same_length(L, S),
+    domain_list_call(psort_, L, S).
 
-psort_1([], A, [A], _).
-psort_1([A2|T], A, S, D) :-
+psort_([], []).
+psort_([A|T], S) :-
+    psort_1(T, A, S).
+
+psort_1([], A, [A]).
+psort_1([A2|T], A, S) :-
 	split([A,A2|T], L, R),
-	psort_(L, SL, D),
-	psort_(R, SR, D),
-	pmerge(SL, SR, S, D).
+	psort_(L, SL),
+	psort_(R, SR),
+	pmerge(SL, SR, S).
 
 
 % split(List, LeftPart, RightPart )
@@ -383,24 +387,23 @@ split_([A2|T], A, [A|LT], [A2|RT]) :-
 % R = an element of RigtSide
 % Rt = the tail of RightSide
 % T = the tail of Merged
-% D = Domain
 % C = a comparison operator
 %
-pmerge( [], R, M, _ ) :- pmerge_0( R, [], M ).
-pmerge( [L|Lt], R, M, D ) :- pmerge_x( R, [L|Lt], M, D ).
+pmerge( [], R, M ) :- pmerge_0( R, [], M ).
+pmerge( [L|Lt], R, M ) :- pmerge_x( R, [L|Lt], M ).
 
 pmerge_0( [], [], [] ).
 pmerge_0( [R|Rt], [], [R|Rt] ).
 
-pmerge_x( [], [L|Lt], [L|Lt], _ ).
-pmerge_x( [R|Rt], [L|Lt], T, D ) :-
-	pcompare( D, L, R, C ),
-	pmerge_( C, [L|Lt], [R|Rt], T, D ).
+pmerge_x( [], [L|Lt], [L|Lt] ).
+pmerge_x( [R|Rt], [L|Lt], T ) :-
+	pcompare( L, R, C ),
+	pmerge_( C, [L|Lt], [R|Rt], T ).
 
-pmerge_( =, [L|Lt], [R|Rt], [L,R|T], D ) :-
-	pmerge( Lt, Rt, T, D ).
-pmerge_( <, [L|Lt], [R|Rt], [L|T], D ) :-
-	pmerge( Lt, [R|Rt], T, D ).
-pmerge_( >, [L|Lt], [R|Rt], [R|T], D ) :-
-	pmerge( [L|Lt], Rt, T, D).
+pmerge_( =, [L|Lt], [R|Rt], [L,R|T] ) :-
+	pmerge( Lt, Rt, T ).
+pmerge_( <, [L|Lt], [R|Rt], [L|T] ) :-
+	pmerge( Lt, [R|Rt], T ).
+pmerge_( >, [L|Lt], [R|Rt], [R|T] ) :-
+	pmerge( [L|Lt], Rt, T ).
 

@@ -1,18 +1,33 @@
 % Comparison Library
 :- module(purity, [
     domain/3,
+    domain/2,
+    
     pcompare/3,
     pdif/2,
     pdif/3,
-    pif/3,
+    
+    pif/3, 
+    (',')/3, 
+    (;)/3,
+    
+    (=)/3,
     eq/2,
     eq/3,
+    
+    (<)/3,
     lt/2,
     lt/3,
+    
+    (<=)/3,
     lte/2,
     lte/3,
+
+    (>)/3,
     gt/2,
-    gt/3,    
+    gt/3,
+
+    (>=)/3,
     gte/2,
     gte/3    
 ]).
@@ -35,14 +50,10 @@
 %
 :- multifile(domain/3).
 
-list_domain_( [], [], _ ).
-list_domain_( [Value|T], [DValue|Rest], Domain ) :- 
-    domain( Domain, Value, DValue ),
-	list_domain_( T, Rest, Domain ).
+domain(X, Domained) :-
+    domain(_, X, Domained).
 
-domain( list(Domain), List, DomainedList ) :-
-    list_domain_( List, DomainedList, Domain ).
-
+:- meta_predicate(pif(1, 0, 0)).
 
 % if(Goal, TrueGoal, FalseGoal).
 %
@@ -71,10 +82,6 @@ conj_(false, _, false).
     call(B, T).
 
 
-% pdif(TermA, TermB, Result).
-%
-% Result is true if TermA is not TermB for otherwise false
-%
 pdif(A,B,R) :-
     pcompare(A,B,C),
     pdif_(C,R).
@@ -83,113 +90,55 @@ pdif_(=,false).
 pdif_(<,true).
 pdif_(>,true).
 
-% pdif(TermA, TermB).
-% 
-% TermA is not TermB 
-% TermA and TermB must be in Domain
-% 
 pdif(A,B) :- pdif(A, B, true).
 
-
-% eq(TermA, TermB).
-%
-% TermA and TermB are equal for Domain.
-%
-eq(A, B) :- pcompare(A, B, =).
-
-% eq(TermA, TermB, Result).
-%
-% Result is true if TermA and TermB are equal for Domain.
-% Result is false if TermA and TermB are equal for Domain.
-%
-eq(A, B, T) :- 
-    pcompare(A, B, C), 
-    eq_(C, T).
+% eq/2, eq/3, (=)/3
+eq(A, B, T) :- compare_with_states(eq_, A, B, T).
+eq(A, B) :-  eq(A, B, true).
+=(A, B, T) :- eq(A, B, T).
 
 eq_(=, true).
 eq_(<, false).
 eq_(>, false).
 
-
-% lt(TermA, TermB). 
-%
-% TermA is less than TermB for Domain.
-%
-lt(A, B) :- pcompare(A, B, <).
-
-% lt(TermA, TermB, Result).
-%
-% Result is true if TermA is less than TermB for Domain.
-% Result is false if TermA is not less than TermB for Domain.
-%
-lt(A, B, T) :- 
-    pcompare(A, B, C), 
-    lt_(C, T).
+% lt/2, lt/3, (<)/3
+lt(A, B, T) :- compare_with_states(lt_, A, B, T).
+lt(A, B) :- lt(A, B, true).
+<(A, B, T) :- lt(A, B, T).
 
 lt_(=, false).
 lt_(<, true).
 lt_(>, false).
 
-
-% lte(TermA, TermB). 
-%
-% TermA is less than or equal to TermB for Domain.
-%
-lte(A, B) :- 
-    pcompare(A, B, C), 
-    lte_(C, true).
-
-% lte(TermA, TermB, Result).
-%
-% Result is true if TermA is less than or equal to TermB for Domain.
-% Result is false if TermA is not less than or equal to TermB for Domain.
-%
-lte(A, B, T) :- 
-    pcompare(A, B, C), 
-    lte_(C, T).
+% lte/2, lte/3, (<=)/3
+lte(A, B, T) :- compare_with_states(lte_, A, B, T).
+lte(A, B) :- lte(A, B, true).
+<=(A, B, T) :- lte(A, B, T).
 
 lte_(=, true).
 lte_(<, true).
 lte_(>, false).
 
-
-% gt(TermA, TermB). 
-%
-% TermA is greater than TermB for Domain
-%
-gt(A, B) :- pcompare(A, B, >).
-
-% gt(TermA, TermB, Result).
-%
-% Result is true if TermA is greater than TermB for Domain.
-% Result is false if TermA is greater than TermB for Domain.
-%
-gt(A, B, T) :- 
-    pcompare(A, B, C), 
-    gt_(C, T).
+% gt/2, gt/3, (>)/3
+gt(A, B, T) :- compare_with_states(gt_, A, B, T).
+gt(A, B) :- gt(A, B, true).    
+>(A, B, T) :- gt(A, B, T).
 
 gt_(=, false).
 gt_(<, false).
 gt_(>, true).
 
-
-% gte(TermA, TermB). 
-% 
-% TermA is greater than or equal to TermB for domain.
-%
-gte(A, B) :- 
-    pcompare(A, B, C), 
-    gte_(C, true).
-
-% gte(TermA, TermB, Result).
-%
-% Result is true if TermA is greater than or equal to TermB for Domain.
-% Result is false if TermA is greater than or equal to TermB for Domain.
-%
-gte(A, B, T) :- 
-    pcompare(A, B, C), 
-    gte_(C, T).
+% gte/2, gte/3, (>=)/3
+gte(A, B, T) :- compare_with_states(gte_, A, B, T).
+gte(A, B) :- gte(A, B, true).
+>=(A, B, T) :- gte(A, B, T).
 
 gte_(=, true).
 gte_(<, false).
 gte_(>, true).
+
+compare_with_states(StateGoal, A, B, Truth) :-
+    domain(A, DA),
+    domain(B, DB),    
+    pcompare(DA, DB, C),
+    call(StateGoal, C, Truth).

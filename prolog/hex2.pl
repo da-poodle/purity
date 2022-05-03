@@ -5,10 +5,6 @@
 :- multifile purity:pcompare/3.
 :- multifile purity:domain/3.
 
-% a character is a hex character
-purity:domain(hex, A, hex(A)) :-
-    hex(A).
-
 % a list of two hex characters is in domain hex2.
 purity:domain(hex2, [A,B], hex2(A,B)) :-
     hex(A), 

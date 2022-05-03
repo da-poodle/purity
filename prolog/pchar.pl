@@ -8,8 +8,7 @@
 
 :- use_module(hex2).
 
-:- multifile purity:domain/3.
-:- multifile purity:pcompare/3.
+
 
 % gen_write :-
 %     gen(Term),
@@ -40,13 +39,7 @@
 
 
 % Char is a character in the pchar domain.
-purity:domain(pchar, Val, pchar(Val)) :-
-    pchar_type(Val, _).
 
-purity:pcompare(pchar(A), pchar(B), C) :-
-    pchar_hex2(A, Ha),
-    pchar_hex2(B, Hb),
-    purity:pcompare(Ha, Hb, C).
 
 % pchar_upper(Char, UpperChar).
 %
