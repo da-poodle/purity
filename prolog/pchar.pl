@@ -1,4 +1,5 @@
 :- module(pchar, [
+   pchar_compare/3,
    pchar_upper/2,
    pchar_lower/2,
    pchar_type/2,
@@ -8,7 +9,10 @@
 
 :- use_module(hex2).
 
-
+pchar_compare(A, B, C) :-
+   pchar_hex2(A, Ah),
+   pchar_hex2(B, Bh),
+   hex2_compare(Ah,Bh,C).
 
 % gen_write :-
 %     gen(Term),

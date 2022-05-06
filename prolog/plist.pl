@@ -1,7 +1,5 @@
 % List Library
 :- module(plist, [
-    domain_list_call/3,
-    domain_list_call/4,
     plist/1,
     plength/2,
     pnth0/3,
@@ -16,21 +14,10 @@
     non_member/2,
     remove_dups/2,
     list_join/3,
-    psort/3,
     psort/2
 ]).
 
 :- use_module(purity).
-
-domain_list_call(Goal, ListIn, ListOut) :-
-    maplist(domain, ListIn, CallList),
-    call(Goal, CallList, ResultList),
-    maplist(domain, ListOut, ResultList).
-
-domain_list_call(Goal, Domain, ListIn, ListOut) :-
-    maplist(domain(Domain), ListIn, CallList),
-    call(Goal, CallList, ResultList),
-    maplist(domain(Domain), ListOut, ResultList).
 
 /*
 % member/2
@@ -83,6 +70,37 @@ psame_length([_|A],[_|B]) :-
     psame_length(A,B).
 */
 
+% plist_compare(List1, List2, Comparator, Domain).
+%
+% compare two lists of type 'Domain' 
+% Comparator contains either =, < or >.
+% comparisons are in relation to the first list
+% eg: if List1 = 3 and List2 = 4 then List1 < List2
+%
+% D = domain
+% C = the comparator operator
+% A = list1 element to compare
+% B = list2 element to compare
+% T1 = tail of list1
+% T2 = tail of list2
+% S = list2
+% TC = temporary compartor
+%
+plist_compare([],S,C, _) :- plist_compare_0(S, C).
+plist_compare([A|T1], S, C, D) :- plist_compare_1(S, [A|T1], C, D).
+
+plist_compare_0([], =).
+plist_compare_0([_|_], <).
+
+plist_compare_1([], _, >, _).
+plist_compare_1([A|T1], [B|T2], C, D) :-
+        pcompare(B, A, TC), 
+        plist_compare_cond(TC, T2, T1, C, D).
+
+plist_compare_cond(<, _, _, <, _).
+plist_compare_cond(>, _, _, >, _).
+plist_compare_cond(=, T1, T2, C, D) :- 
+        plist_compare(T1, T2, C, D).
 
 % plist(L).
 %
@@ -338,13 +356,9 @@ pexclude(G, L, E) :-
 % SL = the sorted version of L
 % SR = the sorted version of R
 %
-psort(D, L, S) :-
-	same_length(L, S),
-    domain_list_call(psort_, D, L, S).
-
 psort(L, S) :-
 	same_length(L, S),
-    domain_list_call(psort_, L, S).
+    psort_(L, S).
 
 psort_([], []).
 psort_([A|T], S) :-

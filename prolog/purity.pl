@@ -1,9 +1,9 @@
 % Comparison Library
 :- module(purity, [
-    domain/3,
-    domain/2,
     
     pcompare/3,
+    ptype/2,
+
     pdif/2,
     pdif/3,
     
@@ -42,16 +42,15 @@
 % both TermA and TermB must be in Domain
 %
 :- multifile(pcompare/3).
+:- multifile(ptype/2).
 
-% domain(Domain, Value, DomainedValue).
-%
-% Holds if Value is the same as DomainedValue, except that DomainedValue 
-% is specified as in Domain.
-%
-:- multifile(domain/3).
-
-domain(X, Domained) :-
-    domain(_, X, Domained).
+ptype(A, domain) :- pcompare(A, A, =).
+ptype(hex(_), hex).
+ptype(hex2(_), hex2).
+ptype([], list).
+ptype([_|_], list).
+ptype(zero, unary).
+ptype(c(_), unary).
 
 :- meta_predicate(pif(1, 0, 0)).
 
@@ -137,8 +136,6 @@ gte_(=, true).
 gte_(<, false).
 gte_(>, true).
 
-compare_with_states(StateGoal, A, B, Truth) :-
-    domain(A, DA),
-    domain(B, DB),    
-    pcompare(DA, DB, C),
+compare_with_states(StateGoal, A, B, Truth) :-  
+    pcompare(A, B, C),
     call(StateGoal, C, Truth).

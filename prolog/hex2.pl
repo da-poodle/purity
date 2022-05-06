@@ -1,19 +1,12 @@
 :- module(hex2, [
-
+    hex_compare/3,
+    hex2_compare/3
 ]).
 
-:- multifile purity:pcompare/3.
-:- multifile purity:domain/3.
-
-% a list of two hex characters is in domain hex2.
-purity:domain(hex2, [A,B], hex2(A,B)) :-
-    hex(A), 
-    hex(B).
-
-purity:pcompare(hex(A), hex(B), C) :-
+hex_compare(hex(A), hex(B), C) :-
     hex_map(A, B, C).
 
-purity:pcompare(hex2(A1,B1), hex2(A2,B2), C) :-
+hex2_compare(hex2(A1,B1), hex2(A2,B2), C) :-
     hex_map(A1, A2, Ch1),
     hex2_cmp(Ch1, B1, B2, C).
 

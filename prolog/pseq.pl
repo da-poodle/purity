@@ -1,1041 +1,1076 @@
 :- module(pseq, [
-    pseq/2,
-    pbetween/3
+    compare_seq/3,    
+    pseq_zero_t/2,
+    pseq_one_t/2,
+    pseq_other_t/2,
+    pbetween/3,
+    pseq/2
 ]).
+
+compare_seq(A, A, =).
+compare_seq(A, B, <) :- less(A,B).
+compare_seq(A, B, >) :- less(B,A).
+
+pseq_zero_t(S, Truth) :-
+    pseq(S, _, Type),
+    pseq_zero_cmp(Type, Truth).
+
+pseq_zero_cmp(zero, true).
+pseq_zero_cmp(one, false).
+pseq_zero_cmp(other, false).
+
+pseq_one_t(S, Truth) :-
+    pseq(S, _, Type),
+    pseq_one_cmp(Type, Truth).
+
+pseq_one_cmp(zero, false).
+pseq_one_cmp(one, true).
+pseq_one_cmp(other, false).
+
+pseq_other_t(S, Truth) :-
+    pseq(S, _, Type),
+    pseq_other_cmp(Type, Truth).
+
+pseq_other_cmp(zero, false).
+pseq_other_cmp(one, false).
+pseq_other_cmp(other, true).
+
 
 less(A,B) :-
     pseq(A,B).
 less(A,B) :-
-    pseq(A,C),
+    pseq(A,C,_),
     less(C,B).
 
 pbetween(Low, _, Low) :- 
-    pseq(Low, _). 
+    pseq(Low, _, _). 
 pbetween(Low, High, N) :- 
     less(Low, High),
     pbetween(Low, High, N).
 
-pseq(0,1).
-pseq(1,2).
-pseq(2,3).
-pseq(3,4).
-pseq(4,5).
-pseq(5,6).
-pseq(6,7).
-pseq(7,8).
-pseq(8,9).
-pseq(9,10).
-pseq(10,11).
-pseq(11,12).
-pseq(12,13).
-pseq(13,14).
-pseq(14,15).
-pseq(15,16).
-pseq(16,17).
-pseq(17,18).
-pseq(18,19).
-pseq(19,20).
-pseq(20,21).
-pseq(21,22).
-pseq(22,23).
-pseq(23,24).
-pseq(24,25).
-pseq(25,26).
-pseq(26,27).
-pseq(27,28).
-pseq(28,29).
-pseq(29,30).
-pseq(30,31).
-pseq(31,32).
-pseq(32,33).
-pseq(33,34).
-pseq(34,35).
-pseq(35,36).
-pseq(36,37).
-pseq(37,38).
-pseq(38,39).
-pseq(39,40).
-pseq(40,41).
-pseq(41,42).
-pseq(42,43).
-pseq(43,44).
-pseq(44,45).
-pseq(45,46).
-pseq(46,47).
-pseq(47,48).
-pseq(48,49).
-pseq(49,50).
-pseq(50,51).
-pseq(51,52).
-pseq(52,53).
-pseq(53,54).
-pseq(54,55).
-pseq(55,56).
-pseq(56,57).
-pseq(57,58).
-pseq(58,59).
-pseq(59,60).
-pseq(60,61).
-pseq(61,62).
-pseq(62,63).
-pseq(63,64).
-pseq(64,65).
-pseq(65,66).
-pseq(66,67).
-pseq(67,68).
-pseq(68,69).
-pseq(69,70).
-pseq(70,71).
-pseq(71,72).
-pseq(72,73).
-pseq(73,74).
-pseq(74,75).
-pseq(75,76).
-pseq(76,77).
-pseq(77,78).
-pseq(78,79).
-pseq(79,80).
-pseq(80,81).
-pseq(81,82).
-pseq(82,83).
-pseq(83,84).
-pseq(84,85).
-pseq(85,86).
-pseq(86,87).
-pseq(87,88).
-pseq(88,89).
-pseq(89,90).
-pseq(90,91).
-pseq(91,92).
-pseq(92,93).
-pseq(93,94).
-pseq(94,95).
-pseq(95,96).
-pseq(96,97).
-pseq(97,98).
-pseq(98,99).
-pseq(99,100).
-pseq(100,101).
-pseq(101,102).
-pseq(102,103).
-pseq(103,104).
-pseq(104,105).
-pseq(105,106).
-pseq(106,107).
-pseq(107,108).
-pseq(108,109).
-pseq(109,110).
-pseq(110,111).
-pseq(111,112).
-pseq(112,113).
-pseq(113,114).
-pseq(114,115).
-pseq(115,116).
-pseq(116,117).
-pseq(117,118).
-pseq(118,119).
-pseq(119,120).
-pseq(120,121).
-pseq(121,122).
-pseq(122,123).
-pseq(123,124).
-pseq(124,125).
-pseq(125,126).
-pseq(126,127).
-pseq(127,128).
-pseq(128,129).
-pseq(129,130).
-pseq(130,131).
-pseq(131,132).
-pseq(132,133).
-pseq(133,134).
-pseq(134,135).
-pseq(135,136).
-pseq(136,137).
-pseq(137,138).
-pseq(138,139).
-pseq(139,140).
-pseq(140,141).
-pseq(141,142).
-pseq(142,143).
-pseq(143,144).
-pseq(144,145).
-pseq(145,146).
-pseq(146,147).
-pseq(147,148).
-pseq(148,149).
-pseq(149,150).
-pseq(150,151).
-pseq(151,152).
-pseq(152,153).
-pseq(153,154).
-pseq(154,155).
-pseq(155,156).
-pseq(156,157).
-pseq(157,158).
-pseq(158,159).
-pseq(159,160).
-pseq(160,161).
-pseq(161,162).
-pseq(162,163).
-pseq(163,164).
-pseq(164,165).
-pseq(165,166).
-pseq(166,167).
-pseq(167,168).
-pseq(168,169).
-pseq(169,170).
-pseq(170,171).
-pseq(171,172).
-pseq(172,173).
-pseq(173,174).
-pseq(174,175).
-pseq(175,176).
-pseq(176,177).
-pseq(177,178).
-pseq(178,179).
-pseq(179,180).
-pseq(180,181).
-pseq(181,182).
-pseq(182,183).
-pseq(183,184).
-pseq(184,185).
-pseq(185,186).
-pseq(186,187).
-pseq(187,188).
-pseq(188,189).
-pseq(189,190).
-pseq(190,191).
-pseq(191,192).
-pseq(192,193).
-pseq(193,194).
-pseq(194,195).
-pseq(195,196).
-pseq(196,197).
-pseq(197,198).
-pseq(198,199).
-pseq(199,200).
-pseq(200,201).
-pseq(201,202).
-pseq(202,203).
-pseq(203,204).
-pseq(204,205).
-pseq(205,206).
-pseq(206,207).
-pseq(207,208).
-pseq(208,209).
-pseq(209,210).
-pseq(210,211).
-pseq(211,212).
-pseq(212,213).
-pseq(213,214).
-pseq(214,215).
-pseq(215,216).
-pseq(216,217).
-pseq(217,218).
-pseq(218,219).
-pseq(219,220).
-pseq(220,221).
-pseq(221,222).
-pseq(222,223).
-pseq(223,224).
-pseq(224,225).
-pseq(225,226).
-pseq(226,227).
-pseq(227,228).
-pseq(228,229).
-pseq(229,230).
-pseq(230,231).
-pseq(231,232).
-pseq(232,233).
-pseq(233,234).
-pseq(234,235).
-pseq(235,236).
-pseq(236,237).
-pseq(237,238).
-pseq(238,239).
-pseq(239,240).
-pseq(240,241).
-pseq(241,242).
-pseq(242,243).
-pseq(243,244).
-pseq(244,245).
-pseq(245,246).
-pseq(246,247).
-pseq(247,248).
-pseq(248,249).
-pseq(249,250).
-pseq(250,251).
-pseq(251,252).
-pseq(252,253).
-pseq(253,254).
-pseq(254,255).
-pseq(255,256).
-pseq(256,257).
-pseq(257,258).
-pseq(258,259).
-pseq(259,260).
-pseq(260,261).
-pseq(261,262).
-pseq(262,263).
-pseq(263,264).
-pseq(264,265).
-pseq(265,266).
-pseq(266,267).
-pseq(267,268).
-pseq(268,269).
-pseq(269,270).
-pseq(270,271).
-pseq(271,272).
-pseq(272,273).
-pseq(273,274).
-pseq(274,275).
-pseq(275,276).
-pseq(276,277).
-pseq(277,278).
-pseq(278,279).
-pseq(279,280).
-pseq(280,281).
-pseq(281,282).
-pseq(282,283).
-pseq(283,284).
-pseq(284,285).
-pseq(285,286).
-pseq(286,287).
-pseq(287,288).
-pseq(288,289).
-pseq(289,290).
-pseq(290,291).
-pseq(291,292).
-pseq(292,293).
-pseq(293,294).
-pseq(294,295).
-pseq(295,296).
-pseq(296,297).
-pseq(297,298).
-pseq(298,299).
-pseq(299,300).
-pseq(300,301).
-pseq(301,302).
-pseq(302,303).
-pseq(303,304).
-pseq(304,305).
-pseq(305,306).
-pseq(306,307).
-pseq(307,308).
-pseq(308,309).
-pseq(309,310).
-pseq(310,311).
-pseq(311,312).
-pseq(312,313).
-pseq(313,314).
-pseq(314,315).
-pseq(315,316).
-pseq(316,317).
-pseq(317,318).
-pseq(318,319).
-pseq(319,320).
-pseq(320,321).
-pseq(321,322).
-pseq(322,323).
-pseq(323,324).
-pseq(324,325).
-pseq(325,326).
-pseq(326,327).
-pseq(327,328).
-pseq(328,329).
-pseq(329,330).
-pseq(330,331).
-pseq(331,332).
-pseq(332,333).
-pseq(333,334).
-pseq(334,335).
-pseq(335,336).
-pseq(336,337).
-pseq(337,338).
-pseq(338,339).
-pseq(339,340).
-pseq(340,341).
-pseq(341,342).
-pseq(342,343).
-pseq(343,344).
-pseq(344,345).
-pseq(345,346).
-pseq(346,347).
-pseq(347,348).
-pseq(348,349).
-pseq(349,350).
-pseq(350,351).
-pseq(351,352).
-pseq(352,353).
-pseq(353,354).
-pseq(354,355).
-pseq(355,356).
-pseq(356,357).
-pseq(357,358).
-pseq(358,359).
-pseq(359,360).
-pseq(360,361).
-pseq(361,362).
-pseq(362,363).
-pseq(363,364).
-pseq(364,365).
-pseq(365,366).
-pseq(366,367).
-pseq(367,368).
-pseq(368,369).
-pseq(369,370).
-pseq(370,371).
-pseq(371,372).
-pseq(372,373).
-pseq(373,374).
-pseq(374,375).
-pseq(375,376).
-pseq(376,377).
-pseq(377,378).
-pseq(378,379).
-pseq(379,380).
-pseq(380,381).
-pseq(381,382).
-pseq(382,383).
-pseq(383,384).
-pseq(384,385).
-pseq(385,386).
-pseq(386,387).
-pseq(387,388).
-pseq(388,389).
-pseq(389,390).
-pseq(390,391).
-pseq(391,392).
-pseq(392,393).
-pseq(393,394).
-pseq(394,395).
-pseq(395,396).
-pseq(396,397).
-pseq(397,398).
-pseq(398,399).
-pseq(399,400).
-pseq(400,401).
-pseq(401,402).
-pseq(402,403).
-pseq(403,404).
-pseq(404,405).
-pseq(405,406).
-pseq(406,407).
-pseq(407,408).
-pseq(408,409).
-pseq(409,410).
-pseq(410,411).
-pseq(411,412).
-pseq(412,413).
-pseq(413,414).
-pseq(414,415).
-pseq(415,416).
-pseq(416,417).
-pseq(417,418).
-pseq(418,419).
-pseq(419,420).
-pseq(420,421).
-pseq(421,422).
-pseq(422,423).
-pseq(423,424).
-pseq(424,425).
-pseq(425,426).
-pseq(426,427).
-pseq(427,428).
-pseq(428,429).
-pseq(429,430).
-pseq(430,431).
-pseq(431,432).
-pseq(432,433).
-pseq(433,434).
-pseq(434,435).
-pseq(435,436).
-pseq(436,437).
-pseq(437,438).
-pseq(438,439).
-pseq(439,440).
-pseq(440,441).
-pseq(441,442).
-pseq(442,443).
-pseq(443,444).
-pseq(444,445).
-pseq(445,446).
-pseq(446,447).
-pseq(447,448).
-pseq(448,449).
-pseq(449,450).
-pseq(450,451).
-pseq(451,452).
-pseq(452,453).
-pseq(453,454).
-pseq(454,455).
-pseq(455,456).
-pseq(456,457).
-pseq(457,458).
-pseq(458,459).
-pseq(459,460).
-pseq(460,461).
-pseq(461,462).
-pseq(462,463).
-pseq(463,464).
-pseq(464,465).
-pseq(465,466).
-pseq(466,467).
-pseq(467,468).
-pseq(468,469).
-pseq(469,470).
-pseq(470,471).
-pseq(471,472).
-pseq(472,473).
-pseq(473,474).
-pseq(474,475).
-pseq(475,476).
-pseq(476,477).
-pseq(477,478).
-pseq(478,479).
-pseq(479,480).
-pseq(480,481).
-pseq(481,482).
-pseq(482,483).
-pseq(483,484).
-pseq(484,485).
-pseq(485,486).
-pseq(486,487).
-pseq(487,488).
-pseq(488,489).
-pseq(489,490).
-pseq(490,491).
-pseq(491,492).
-pseq(492,493).
-pseq(493,494).
-pseq(494,495).
-pseq(495,496).
-pseq(496,497).
-pseq(497,498).
-pseq(498,499).
-pseq(499,500).
-pseq(500,501).
-pseq(501,502).
-pseq(502,503).
-pseq(503,504).
-pseq(504,505).
-pseq(505,506).
-pseq(506,507).
-pseq(507,508).
-pseq(508,509).
-pseq(509,510).
-pseq(510,511).
-pseq(511,512).
-pseq(512,513).
-pseq(513,514).
-pseq(514,515).
-pseq(515,516).
-pseq(516,517).
-pseq(517,518).
-pseq(518,519).
-pseq(519,520).
-pseq(520,521).
-pseq(521,522).
-pseq(522,523).
-pseq(523,524).
-pseq(524,525).
-pseq(525,526).
-pseq(526,527).
-pseq(527,528).
-pseq(528,529).
-pseq(529,530).
-pseq(530,531).
-pseq(531,532).
-pseq(532,533).
-pseq(533,534).
-pseq(534,535).
-pseq(535,536).
-pseq(536,537).
-pseq(537,538).
-pseq(538,539).
-pseq(539,540).
-pseq(540,541).
-pseq(541,542).
-pseq(542,543).
-pseq(543,544).
-pseq(544,545).
-pseq(545,546).
-pseq(546,547).
-pseq(547,548).
-pseq(548,549).
-pseq(549,550).
-pseq(550,551).
-pseq(551,552).
-pseq(552,553).
-pseq(553,554).
-pseq(554,555).
-pseq(555,556).
-pseq(556,557).
-pseq(557,558).
-pseq(558,559).
-pseq(559,560).
-pseq(560,561).
-pseq(561,562).
-pseq(562,563).
-pseq(563,564).
-pseq(564,565).
-pseq(565,566).
-pseq(566,567).
-pseq(567,568).
-pseq(568,569).
-pseq(569,570).
-pseq(570,571).
-pseq(571,572).
-pseq(572,573).
-pseq(573,574).
-pseq(574,575).
-pseq(575,576).
-pseq(576,577).
-pseq(577,578).
-pseq(578,579).
-pseq(579,580).
-pseq(580,581).
-pseq(581,582).
-pseq(582,583).
-pseq(583,584).
-pseq(584,585).
-pseq(585,586).
-pseq(586,587).
-pseq(587,588).
-pseq(588,589).
-pseq(589,590).
-pseq(590,591).
-pseq(591,592).
-pseq(592,593).
-pseq(593,594).
-pseq(594,595).
-pseq(595,596).
-pseq(596,597).
-pseq(597,598).
-pseq(598,599).
-pseq(599,600).
-pseq(600,601).
-pseq(601,602).
-pseq(602,603).
-pseq(603,604).
-pseq(604,605).
-pseq(605,606).
-pseq(606,607).
-pseq(607,608).
-pseq(608,609).
-pseq(609,610).
-pseq(610,611).
-pseq(611,612).
-pseq(612,613).
-pseq(613,614).
-pseq(614,615).
-pseq(615,616).
-pseq(616,617).
-pseq(617,618).
-pseq(618,619).
-pseq(619,620).
-pseq(620,621).
-pseq(621,622).
-pseq(622,623).
-pseq(623,624).
-pseq(624,625).
-pseq(625,626).
-pseq(626,627).
-pseq(627,628).
-pseq(628,629).
-pseq(629,630).
-pseq(630,631).
-pseq(631,632).
-pseq(632,633).
-pseq(633,634).
-pseq(634,635).
-pseq(635,636).
-pseq(636,637).
-pseq(637,638).
-pseq(638,639).
-pseq(639,640).
-pseq(640,641).
-pseq(641,642).
-pseq(642,643).
-pseq(643,644).
-pseq(644,645).
-pseq(645,646).
-pseq(646,647).
-pseq(647,648).
-pseq(648,649).
-pseq(649,650).
-pseq(650,651).
-pseq(651,652).
-pseq(652,653).
-pseq(653,654).
-pseq(654,655).
-pseq(655,656).
-pseq(656,657).
-pseq(657,658).
-pseq(658,659).
-pseq(659,660).
-pseq(660,661).
-pseq(661,662).
-pseq(662,663).
-pseq(663,664).
-pseq(664,665).
-pseq(665,666).
-pseq(666,667).
-pseq(667,668).
-pseq(668,669).
-pseq(669,670).
-pseq(670,671).
-pseq(671,672).
-pseq(672,673).
-pseq(673,674).
-pseq(674,675).
-pseq(675,676).
-pseq(676,677).
-pseq(677,678).
-pseq(678,679).
-pseq(679,680).
-pseq(680,681).
-pseq(681,682).
-pseq(682,683).
-pseq(683,684).
-pseq(684,685).
-pseq(685,686).
-pseq(686,687).
-pseq(687,688).
-pseq(688,689).
-pseq(689,690).
-pseq(690,691).
-pseq(691,692).
-pseq(692,693).
-pseq(693,694).
-pseq(694,695).
-pseq(695,696).
-pseq(696,697).
-pseq(697,698).
-pseq(698,699).
-pseq(699,700).
-pseq(700,701).
-pseq(701,702).
-pseq(702,703).
-pseq(703,704).
-pseq(704,705).
-pseq(705,706).
-pseq(706,707).
-pseq(707,708).
-pseq(708,709).
-pseq(709,710).
-pseq(710,711).
-pseq(711,712).
-pseq(712,713).
-pseq(713,714).
-pseq(714,715).
-pseq(715,716).
-pseq(716,717).
-pseq(717,718).
-pseq(718,719).
-pseq(719,720).
-pseq(720,721).
-pseq(721,722).
-pseq(722,723).
-pseq(723,724).
-pseq(724,725).
-pseq(725,726).
-pseq(726,727).
-pseq(727,728).
-pseq(728,729).
-pseq(729,730).
-pseq(730,731).
-pseq(731,732).
-pseq(732,733).
-pseq(733,734).
-pseq(734,735).
-pseq(735,736).
-pseq(736,737).
-pseq(737,738).
-pseq(738,739).
-pseq(739,740).
-pseq(740,741).
-pseq(741,742).
-pseq(742,743).
-pseq(743,744).
-pseq(744,745).
-pseq(745,746).
-pseq(746,747).
-pseq(747,748).
-pseq(748,749).
-pseq(749,750).
-pseq(750,751).
-pseq(751,752).
-pseq(752,753).
-pseq(753,754).
-pseq(754,755).
-pseq(755,756).
-pseq(756,757).
-pseq(757,758).
-pseq(758,759).
-pseq(759,760).
-pseq(760,761).
-pseq(761,762).
-pseq(762,763).
-pseq(763,764).
-pseq(764,765).
-pseq(765,766).
-pseq(766,767).
-pseq(767,768).
-pseq(768,769).
-pseq(769,770).
-pseq(770,771).
-pseq(771,772).
-pseq(772,773).
-pseq(773,774).
-pseq(774,775).
-pseq(775,776).
-pseq(776,777).
-pseq(777,778).
-pseq(778,779).
-pseq(779,780).
-pseq(780,781).
-pseq(781,782).
-pseq(782,783).
-pseq(783,784).
-pseq(784,785).
-pseq(785,786).
-pseq(786,787).
-pseq(787,788).
-pseq(788,789).
-pseq(789,790).
-pseq(790,791).
-pseq(791,792).
-pseq(792,793).
-pseq(793,794).
-pseq(794,795).
-pseq(795,796).
-pseq(796,797).
-pseq(797,798).
-pseq(798,799).
-pseq(799,800).
-pseq(800,801).
-pseq(801,802).
-pseq(802,803).
-pseq(803,804).
-pseq(804,805).
-pseq(805,806).
-pseq(806,807).
-pseq(807,808).
-pseq(808,809).
-pseq(809,810).
-pseq(810,811).
-pseq(811,812).
-pseq(812,813).
-pseq(813,814).
-pseq(814,815).
-pseq(815,816).
-pseq(816,817).
-pseq(817,818).
-pseq(818,819).
-pseq(819,820).
-pseq(820,821).
-pseq(821,822).
-pseq(822,823).
-pseq(823,824).
-pseq(824,825).
-pseq(825,826).
-pseq(826,827).
-pseq(827,828).
-pseq(828,829).
-pseq(829,830).
-pseq(830,831).
-pseq(831,832).
-pseq(832,833).
-pseq(833,834).
-pseq(834,835).
-pseq(835,836).
-pseq(836,837).
-pseq(837,838).
-pseq(838,839).
-pseq(839,840).
-pseq(840,841).
-pseq(841,842).
-pseq(842,843).
-pseq(843,844).
-pseq(844,845).
-pseq(845,846).
-pseq(846,847).
-pseq(847,848).
-pseq(848,849).
-pseq(849,850).
-pseq(850,851).
-pseq(851,852).
-pseq(852,853).
-pseq(853,854).
-pseq(854,855).
-pseq(855,856).
-pseq(856,857).
-pseq(857,858).
-pseq(858,859).
-pseq(859,860).
-pseq(860,861).
-pseq(861,862).
-pseq(862,863).
-pseq(863,864).
-pseq(864,865).
-pseq(865,866).
-pseq(866,867).
-pseq(867,868).
-pseq(868,869).
-pseq(869,870).
-pseq(870,871).
-pseq(871,872).
-pseq(872,873).
-pseq(873,874).
-pseq(874,875).
-pseq(875,876).
-pseq(876,877).
-pseq(877,878).
-pseq(878,879).
-pseq(879,880).
-pseq(880,881).
-pseq(881,882).
-pseq(882,883).
-pseq(883,884).
-pseq(884,885).
-pseq(885,886).
-pseq(886,887).
-pseq(887,888).
-pseq(888,889).
-pseq(889,890).
-pseq(890,891).
-pseq(891,892).
-pseq(892,893).
-pseq(893,894).
-pseq(894,895).
-pseq(895,896).
-pseq(896,897).
-pseq(897,898).
-pseq(898,899).
-pseq(899,900).
-pseq(900,901).
-pseq(901,902).
-pseq(902,903).
-pseq(903,904).
-pseq(904,905).
-pseq(905,906).
-pseq(906,907).
-pseq(907,908).
-pseq(908,909).
-pseq(909,910).
-pseq(910,911).
-pseq(911,912).
-pseq(912,913).
-pseq(913,914).
-pseq(914,915).
-pseq(915,916).
-pseq(916,917).
-pseq(917,918).
-pseq(918,919).
-pseq(919,920).
-pseq(920,921).
-pseq(921,922).
-pseq(922,923).
-pseq(923,924).
-pseq(924,925).
-pseq(925,926).
-pseq(926,927).
-pseq(927,928).
-pseq(928,929).
-pseq(929,930).
-pseq(930,931).
-pseq(931,932).
-pseq(932,933).
-pseq(933,934).
-pseq(934,935).
-pseq(935,936).
-pseq(936,937).
-pseq(937,938).
-pseq(938,939).
-pseq(939,940).
-pseq(940,941).
-pseq(941,942).
-pseq(942,943).
-pseq(943,944).
-pseq(944,945).
-pseq(945,946).
-pseq(946,947).
-pseq(947,948).
-pseq(948,949).
-pseq(949,950).
-pseq(950,951).
-pseq(951,952).
-pseq(952,953).
-pseq(953,954).
-pseq(954,955).
-pseq(955,956).
-pseq(956,957).
-pseq(957,958).
-pseq(958,959).
-pseq(959,960).
-pseq(960,961).
-pseq(961,962).
-pseq(962,963).
-pseq(963,964).
-pseq(964,965).
-pseq(965,966).
-pseq(966,967).
-pseq(967,968).
-pseq(968,969).
-pseq(969,970).
-pseq(970,971).
-pseq(971,972).
-pseq(972,973).
-pseq(973,974).
-pseq(974,975).
-pseq(975,976).
-pseq(976,977).
-pseq(977,978).
-pseq(978,979).
-pseq(979,980).
-pseq(980,981).
-pseq(981,982).
-pseq(982,983).
-pseq(983,984).
-pseq(984,985).
-pseq(985,986).
-pseq(986,987).
-pseq(987,988).
-pseq(988,989).
-pseq(989,990).
-pseq(990,991).
-pseq(991,992).
-pseq(992,993).
-pseq(993,994).
-pseq(994,995).
-pseq(995,996).
-pseq(996,997).
-pseq(997,998).
-pseq(998,999).
-pseq(999,1000).
-pseq(1000,1001).
-pseq(1001,1002).
-pseq(1002,1003).
-pseq(1003,1004).
-pseq(1004,1005).
-pseq(1005,1006).
-pseq(1006,1007).
-pseq(1007,1008).
-pseq(1008,1009).
-pseq(1009,1010).
-pseq(1010,1011).
-pseq(1011,1012).
-pseq(1012,1013).
-pseq(1013,1014).
-pseq(1014,1015).
-pseq(1015,1016).
-pseq(1016,1017).
-pseq(1017,1018).
-pseq(1018,1019).
-pseq(1019,1020).
-pseq(1020,1021).
-pseq(1021,1022).
-pseq(1022,1023).
-pseq(1023,1024).
+pseq(A, B) :- pseq(A, B, _).
+
+pseq(0,1, zero).
+pseq(1,2, one).
+pseq(2,3, other).
+pseq(3,4, other).
+pseq(4,5, other).
+pseq(5,6, other).
+pseq(6,7, other).
+pseq(7,8, other).
+pseq(8,9, other).
+pseq(9,10, other).
+pseq(10,11, other).
+pseq(11,12, other).
+pseq(12,13, other).
+pseq(13,14, other).
+pseq(14,15, other).
+pseq(15,16, other).
+pseq(16,17, other).
+pseq(17,18, other).
+pseq(18,19, other).
+pseq(19,20, other).
+pseq(20,21, other).
+pseq(21,22, other).
+pseq(22,23, other).
+pseq(23,24, other).
+pseq(24,25, other).
+pseq(25,26, other).
+pseq(26,27, other).
+pseq(27,28, other).
+pseq(28,29, other).
+pseq(29,30, other).
+pseq(30,31, other).
+pseq(31,32, other).
+pseq(32,33, other).
+pseq(33,34, other).
+pseq(34,35, other).
+pseq(35,36, other).
+pseq(36,37, other).
+pseq(37,38, other).
+pseq(38,39, other).
+pseq(39,40, other).
+pseq(40,41, other).
+pseq(41,42, other).
+pseq(42,43, other).
+pseq(43,44, other).
+pseq(44,45, other).
+pseq(45,46, other).
+pseq(46,47, other).
+pseq(47,48, other).
+pseq(48,49, other).
+pseq(49,50, other).
+pseq(50,51, other).
+pseq(51,52, other).
+pseq(52,53, other).
+pseq(53,54, other).
+pseq(54,55, other).
+pseq(55,56, other).
+pseq(56,57, other).
+pseq(57,58, other).
+pseq(58,59, other).
+pseq(59,60, other).
+pseq(60,61, other).
+pseq(61,62, other).
+pseq(62,63, other).
+pseq(63,64, other).
+pseq(64,65, other).
+pseq(65,66, other).
+pseq(66,67, other).
+pseq(67,68, other).
+pseq(68,69, other).
+pseq(69,70, other).
+pseq(70,71, other).
+pseq(71,72, other).
+pseq(72,73, other).
+pseq(73,74, other).
+pseq(74,75, other).
+pseq(75,76, other).
+pseq(76,77, other).
+pseq(77,78, other).
+pseq(78,79, other).
+pseq(79,80, other).
+pseq(80,81, other).
+pseq(81,82, other).
+pseq(82,83, other).
+pseq(83,84, other).
+pseq(84,85, other).
+pseq(85,86, other).
+pseq(86,87, other).
+pseq(87,88, other).
+pseq(88,89, other).
+pseq(89,90, other).
+pseq(90,91, other).
+pseq(91,92, other).
+pseq(92,93, other).
+pseq(93,94, other).
+pseq(94,95, other).
+pseq(95,96, other).
+pseq(96,97, other).
+pseq(97,98, other).
+pseq(98,99, other).
+pseq(99,100, other).
+pseq(100,101, other).
+pseq(101,102, other).
+pseq(102,103, other).
+pseq(103,104, other).
+pseq(104,105, other).
+pseq(105,106, other).
+pseq(106,107, other).
+pseq(107,108, other).
+pseq(108,109, other).
+pseq(109,110, other).
+pseq(110,111, other).
+pseq(111,112, other).
+pseq(112,113, other).
+pseq(113,114, other).
+pseq(114,115, other).
+pseq(115,116, other).
+pseq(116,117, other).
+pseq(117,118, other).
+pseq(118,119, other).
+pseq(119,120, other).
+pseq(120,121, other).
+pseq(121,122, other).
+pseq(122,123, other).
+pseq(123,124, other).
+pseq(124,125, other).
+pseq(125,126, other).
+pseq(126,127, other).
+pseq(127,128, other).
+pseq(128,129, other).
+pseq(129,130, other).
+pseq(130,131, other).
+pseq(131,132, other).
+pseq(132,133, other).
+pseq(133,134, other).
+pseq(134,135, other).
+pseq(135,136, other).
+pseq(136,137, other).
+pseq(137,138, other).
+pseq(138,139, other).
+pseq(139,140, other).
+pseq(140,141, other).
+pseq(141,142, other).
+pseq(142,143, other).
+pseq(143,144, other).
+pseq(144,145, other).
+pseq(145,146, other).
+pseq(146,147, other).
+pseq(147,148, other).
+pseq(148,149, other).
+pseq(149,150, other).
+pseq(150,151, other).
+pseq(151,152, other).
+pseq(152,153, other).
+pseq(153,154, other).
+pseq(154,155, other).
+pseq(155,156, other).
+pseq(156,157, other).
+pseq(157,158, other).
+pseq(158,159, other).
+pseq(159,160, other).
+pseq(160,161, other).
+pseq(161,162, other).
+pseq(162,163, other).
+pseq(163,164, other).
+pseq(164,165, other).
+pseq(165,166, other).
+pseq(166,167, other).
+pseq(167,168, other).
+pseq(168,169, other).
+pseq(169,170, other).
+pseq(170,171, other).
+pseq(171,172, other).
+pseq(172,173, other).
+pseq(173,174, other).
+pseq(174,175, other).
+pseq(175,176, other).
+pseq(176,177, other).
+pseq(177,178, other).
+pseq(178,179, other).
+pseq(179,180, other).
+pseq(180,181, other).
+pseq(181,182, other).
+pseq(182,183, other).
+pseq(183,184, other).
+pseq(184,185, other).
+pseq(185,186, other).
+pseq(186,187, other).
+pseq(187,188, other).
+pseq(188,189, other).
+pseq(189,190, other).
+pseq(190,191, other).
+pseq(191,192, other).
+pseq(192,193, other).
+pseq(193,194, other).
+pseq(194,195, other).
+pseq(195,196, other).
+pseq(196,197, other).
+pseq(197,198, other).
+pseq(198,199, other).
+pseq(199,200, other).
+pseq(200,201, other).
+pseq(201,202, other).
+pseq(202,203, other).
+pseq(203,204, other).
+pseq(204,205, other).
+pseq(205,206, other).
+pseq(206,207, other).
+pseq(207,208, other).
+pseq(208,209, other).
+pseq(209,210, other).
+pseq(210,211, other).
+pseq(211,212, other).
+pseq(212,213, other).
+pseq(213,214, other).
+pseq(214,215, other).
+pseq(215,216, other).
+pseq(216,217, other).
+pseq(217,218, other).
+pseq(218,219, other).
+pseq(219,220, other).
+pseq(220,221, other).
+pseq(221,222, other).
+pseq(222,223, other).
+pseq(223,224, other).
+pseq(224,225, other).
+pseq(225,226, other).
+pseq(226,227, other).
+pseq(227,228, other).
+pseq(228,229, other).
+pseq(229,230, other).
+pseq(230,231, other).
+pseq(231,232, other).
+pseq(232,233, other).
+pseq(233,234, other).
+pseq(234,235, other).
+pseq(235,236, other).
+pseq(236,237, other).
+pseq(237,238, other).
+pseq(238,239, other).
+pseq(239,240, other).
+pseq(240,241, other).
+pseq(241,242, other).
+pseq(242,243, other).
+pseq(243,244, other).
+pseq(244,245, other).
+pseq(245,246, other).
+pseq(246,247, other).
+pseq(247,248, other).
+pseq(248,249, other).
+pseq(249,250, other).
+pseq(250,251, other).
+pseq(251,252, other).
+pseq(252,253, other).
+pseq(253,254, other).
+pseq(254,255, other).
+pseq(255,256, other).
+pseq(256,257, other).
+pseq(257,258, other).
+pseq(258,259, other).
+pseq(259,260, other).
+pseq(260,261, other).
+pseq(261,262, other).
+pseq(262,263, other).
+pseq(263,264, other).
+pseq(264,265, other).
+pseq(265,266, other).
+pseq(266,267, other).
+pseq(267,268, other).
+pseq(268,269, other).
+pseq(269,270, other).
+pseq(270,271, other).
+pseq(271,272, other).
+pseq(272,273, other).
+pseq(273,274, other).
+pseq(274,275, other).
+pseq(275,276, other).
+pseq(276,277, other).
+pseq(277,278, other).
+pseq(278,279, other).
+pseq(279,280, other).
+pseq(280,281, other).
+pseq(281,282, other).
+pseq(282,283, other).
+pseq(283,284, other).
+pseq(284,285, other).
+pseq(285,286, other).
+pseq(286,287, other).
+pseq(287,288, other).
+pseq(288,289, other).
+pseq(289,290, other).
+pseq(290,291, other).
+pseq(291,292, other).
+pseq(292,293, other).
+pseq(293,294, other).
+pseq(294,295, other).
+pseq(295,296, other).
+pseq(296,297, other).
+pseq(297,298, other).
+pseq(298,299, other).
+pseq(299,300, other).
+pseq(300,301, other).
+pseq(301,302, other).
+pseq(302,303, other).
+pseq(303,304, other).
+pseq(304,305, other).
+pseq(305,306, other).
+pseq(306,307, other).
+pseq(307,308, other).
+pseq(308,309, other).
+pseq(309,310, other).
+pseq(310,311, other).
+pseq(311,312, other).
+pseq(312,313, other).
+pseq(313,314, other).
+pseq(314,315, other).
+pseq(315,316, other).
+pseq(316,317, other).
+pseq(317,318, other).
+pseq(318,319, other).
+pseq(319,320, other).
+pseq(320,321, other).
+pseq(321,322, other).
+pseq(322,323, other).
+pseq(323,324, other).
+pseq(324,325, other).
+pseq(325,326, other).
+pseq(326,327, other).
+pseq(327,328, other).
+pseq(328,329, other).
+pseq(329,330, other).
+pseq(330,331, other).
+pseq(331,332, other).
+pseq(332,333, other).
+pseq(333,334, other).
+pseq(334,335, other).
+pseq(335,336, other).
+pseq(336,337, other).
+pseq(337,338, other).
+pseq(338,339, other).
+pseq(339,340, other).
+pseq(340,341, other).
+pseq(341,342, other).
+pseq(342,343, other).
+pseq(343,344, other).
+pseq(344,345, other).
+pseq(345,346, other).
+pseq(346,347, other).
+pseq(347,348, other).
+pseq(348,349, other).
+pseq(349,350, other).
+pseq(350,351, other).
+pseq(351,352, other).
+pseq(352,353, other).
+pseq(353,354, other).
+pseq(354,355, other).
+pseq(355,356, other).
+pseq(356,357, other).
+pseq(357,358, other).
+pseq(358,359, other).
+pseq(359,360, other).
+pseq(360,361, other).
+pseq(361,362, other).
+pseq(362,363, other).
+pseq(363,364, other).
+pseq(364,365, other).
+pseq(365,366, other).
+pseq(366,367, other).
+pseq(367,368, other).
+pseq(368,369, other).
+pseq(369,370, other).
+pseq(370,371, other).
+pseq(371,372, other).
+pseq(372,373, other).
+pseq(373,374, other).
+pseq(374,375, other).
+pseq(375,376, other).
+pseq(376,377, other).
+pseq(377,378, other).
+pseq(378,379, other).
+pseq(379,380, other).
+pseq(380,381, other).
+pseq(381,382, other).
+pseq(382,383, other).
+pseq(383,384, other).
+pseq(384,385, other).
+pseq(385,386, other).
+pseq(386,387, other).
+pseq(387,388, other).
+pseq(388,389, other).
+pseq(389,390, other).
+pseq(390,391, other).
+pseq(391,392, other).
+pseq(392,393, other).
+pseq(393,394, other).
+pseq(394,395, other).
+pseq(395,396, other).
+pseq(396,397, other).
+pseq(397,398, other).
+pseq(398,399, other).
+pseq(399,400, other).
+pseq(400,401, other).
+pseq(401,402, other).
+pseq(402,403, other).
+pseq(403,404, other).
+pseq(404,405, other).
+pseq(405,406, other).
+pseq(406,407, other).
+pseq(407,408, other).
+pseq(408,409, other).
+pseq(409,410, other).
+pseq(410,411, other).
+pseq(411,412, other).
+pseq(412,413, other).
+pseq(413,414, other).
+pseq(414,415, other).
+pseq(415,416, other).
+pseq(416,417, other).
+pseq(417,418, other).
+pseq(418,419, other).
+pseq(419,420, other).
+pseq(420,421, other).
+pseq(421,422, other).
+pseq(422,423, other).
+pseq(423,424, other).
+pseq(424,425, other).
+pseq(425,426, other).
+pseq(426,427, other).
+pseq(427,428, other).
+pseq(428,429, other).
+pseq(429,430, other).
+pseq(430,431, other).
+pseq(431,432, other).
+pseq(432,433, other).
+pseq(433,434, other).
+pseq(434,435, other).
+pseq(435,436, other).
+pseq(436,437, other).
+pseq(437,438, other).
+pseq(438,439, other).
+pseq(439,440, other).
+pseq(440,441, other).
+pseq(441,442, other).
+pseq(442,443, other).
+pseq(443,444, other).
+pseq(444,445, other).
+pseq(445,446, other).
+pseq(446,447, other).
+pseq(447,448, other).
+pseq(448,449, other).
+pseq(449,450, other).
+pseq(450,451, other).
+pseq(451,452, other).
+pseq(452,453, other).
+pseq(453,454, other).
+pseq(454,455, other).
+pseq(455,456, other).
+pseq(456,457, other).
+pseq(457,458, other).
+pseq(458,459, other).
+pseq(459,460, other).
+pseq(460,461, other).
+pseq(461,462, other).
+pseq(462,463, other).
+pseq(463,464, other).
+pseq(464,465, other).
+pseq(465,466, other).
+pseq(466,467, other).
+pseq(467,468, other).
+pseq(468,469, other).
+pseq(469,470, other).
+pseq(470,471, other).
+pseq(471,472, other).
+pseq(472,473, other).
+pseq(473,474, other).
+pseq(474,475, other).
+pseq(475,476, other).
+pseq(476,477, other).
+pseq(477,478, other).
+pseq(478,479, other).
+pseq(479,480, other).
+pseq(480,481, other).
+pseq(481,482, other).
+pseq(482,483, other).
+pseq(483,484, other).
+pseq(484,485, other).
+pseq(485,486, other).
+pseq(486,487, other).
+pseq(487,488, other).
+pseq(488,489, other).
+pseq(489,490, other).
+pseq(490,491, other).
+pseq(491,492, other).
+pseq(492,493, other).
+pseq(493,494, other).
+pseq(494,495, other).
+pseq(495,496, other).
+pseq(496,497, other).
+pseq(497,498, other).
+pseq(498,499, other).
+pseq(499,500, other).
+pseq(500,501, other).
+pseq(501,502, other).
+pseq(502,503, other).
+pseq(503,504, other).
+pseq(504,505, other).
+pseq(505,506, other).
+pseq(506,507, other).
+pseq(507,508, other).
+pseq(508,509, other).
+pseq(509,510, other).
+pseq(510,511, other).
+pseq(511,512, other).
+pseq(512,513, other).
+pseq(513,514, other).
+pseq(514,515, other).
+pseq(515,516, other).
+pseq(516,517, other).
+pseq(517,518, other).
+pseq(518,519, other).
+pseq(519,520, other).
+pseq(520,521, other).
+pseq(521,522, other).
+pseq(522,523, other).
+pseq(523,524, other).
+pseq(524,525, other).
+pseq(525,526, other).
+pseq(526,527, other).
+pseq(527,528, other).
+pseq(528,529, other).
+pseq(529,530, other).
+pseq(530,531, other).
+pseq(531,532, other).
+pseq(532,533, other).
+pseq(533,534, other).
+pseq(534,535, other).
+pseq(535,536, other).
+pseq(536,537, other).
+pseq(537,538, other).
+pseq(538,539, other).
+pseq(539,540, other).
+pseq(540,541, other).
+pseq(541,542, other).
+pseq(542,543, other).
+pseq(543,544, other).
+pseq(544,545, other).
+pseq(545,546, other).
+pseq(546,547, other).
+pseq(547,548, other).
+pseq(548,549, other).
+pseq(549,550, other).
+pseq(550,551, other).
+pseq(551,552, other).
+pseq(552,553, other).
+pseq(553,554, other).
+pseq(554,555, other).
+pseq(555,556, other).
+pseq(556,557, other).
+pseq(557,558, other).
+pseq(558,559, other).
+pseq(559,560, other).
+pseq(560,561, other).
+pseq(561,562, other).
+pseq(562,563, other).
+pseq(563,564, other).
+pseq(564,565, other).
+pseq(565,566, other).
+pseq(566,567, other).
+pseq(567,568, other).
+pseq(568,569, other).
+pseq(569,570, other).
+pseq(570,571, other).
+pseq(571,572, other).
+pseq(572,573, other).
+pseq(573,574, other).
+pseq(574,575, other).
+pseq(575,576, other).
+pseq(576,577, other).
+pseq(577,578, other).
+pseq(578,579, other).
+pseq(579,580, other).
+pseq(580,581, other).
+pseq(581,582, other).
+pseq(582,583, other).
+pseq(583,584, other).
+pseq(584,585, other).
+pseq(585,586, other).
+pseq(586,587, other).
+pseq(587,588, other).
+pseq(588,589, other).
+pseq(589,590, other).
+pseq(590,591, other).
+pseq(591,592, other).
+pseq(592,593, other).
+pseq(593,594, other).
+pseq(594,595, other).
+pseq(595,596, other).
+pseq(596,597, other).
+pseq(597,598, other).
+pseq(598,599, other).
+pseq(599,600, other).
+pseq(600,601, other).
+pseq(601,602, other).
+pseq(602,603, other).
+pseq(603,604, other).
+pseq(604,605, other).
+pseq(605,606, other).
+pseq(606,607, other).
+pseq(607,608, other).
+pseq(608,609, other).
+pseq(609,610, other).
+pseq(610,611, other).
+pseq(611,612, other).
+pseq(612,613, other).
+pseq(613,614, other).
+pseq(614,615, other).
+pseq(615,616, other).
+pseq(616,617, other).
+pseq(617,618, other).
+pseq(618,619, other).
+pseq(619,620, other).
+pseq(620,621, other).
+pseq(621,622, other).
+pseq(622,623, other).
+pseq(623,624, other).
+pseq(624,625, other).
+pseq(625,626, other).
+pseq(626,627, other).
+pseq(627,628, other).
+pseq(628,629, other).
+pseq(629,630, other).
+pseq(630,631, other).
+pseq(631,632, other).
+pseq(632,633, other).
+pseq(633,634, other).
+pseq(634,635, other).
+pseq(635,636, other).
+pseq(636,637, other).
+pseq(637,638, other).
+pseq(638,639, other).
+pseq(639,640, other).
+pseq(640,641, other).
+pseq(641,642, other).
+pseq(642,643, other).
+pseq(643,644, other).
+pseq(644,645, other).
+pseq(645,646, other).
+pseq(646,647, other).
+pseq(647,648, other).
+pseq(648,649, other).
+pseq(649,650, other).
+pseq(650,651, other).
+pseq(651,652, other).
+pseq(652,653, other).
+pseq(653,654, other).
+pseq(654,655, other).
+pseq(655,656, other).
+pseq(656,657, other).
+pseq(657,658, other).
+pseq(658,659, other).
+pseq(659,660, other).
+pseq(660,661, other).
+pseq(661,662, other).
+pseq(662,663, other).
+pseq(663,664, other).
+pseq(664,665, other).
+pseq(665,666, other).
+pseq(666,667, other).
+pseq(667,668, other).
+pseq(668,669, other).
+pseq(669,670, other).
+pseq(670,671, other).
+pseq(671,672, other).
+pseq(672,673, other).
+pseq(673,674, other).
+pseq(674,675, other).
+pseq(675,676, other).
+pseq(676,677, other).
+pseq(677,678, other).
+pseq(678,679, other).
+pseq(679,680, other).
+pseq(680,681, other).
+pseq(681,682, other).
+pseq(682,683, other).
+pseq(683,684, other).
+pseq(684,685, other).
+pseq(685,686, other).
+pseq(686,687, other).
+pseq(687,688, other).
+pseq(688,689, other).
+pseq(689,690, other).
+pseq(690,691, other).
+pseq(691,692, other).
+pseq(692,693, other).
+pseq(693,694, other).
+pseq(694,695, other).
+pseq(695,696, other).
+pseq(696,697, other).
+pseq(697,698, other).
+pseq(698,699, other).
+pseq(699,700, other).
+pseq(700,701, other).
+pseq(701,702, other).
+pseq(702,703, other).
+pseq(703,704, other).
+pseq(704,705, other).
+pseq(705,706, other).
+pseq(706,707, other).
+pseq(707,708, other).
+pseq(708,709, other).
+pseq(709,710, other).
+pseq(710,711, other).
+pseq(711,712, other).
+pseq(712,713, other).
+pseq(713,714, other).
+pseq(714,715, other).
+pseq(715,716, other).
+pseq(716,717, other).
+pseq(717,718, other).
+pseq(718,719, other).
+pseq(719,720, other).
+pseq(720,721, other).
+pseq(721,722, other).
+pseq(722,723, other).
+pseq(723,724, other).
+pseq(724,725, other).
+pseq(725,726, other).
+pseq(726,727, other).
+pseq(727,728, other).
+pseq(728,729, other).
+pseq(729,730, other).
+pseq(730,731, other).
+pseq(731,732, other).
+pseq(732,733, other).
+pseq(733,734, other).
+pseq(734,735, other).
+pseq(735,736, other).
+pseq(736,737, other).
+pseq(737,738, other).
+pseq(738,739, other).
+pseq(739,740, other).
+pseq(740,741, other).
+pseq(741,742, other).
+pseq(742,743, other).
+pseq(743,744, other).
+pseq(744,745, other).
+pseq(745,746, other).
+pseq(746,747, other).
+pseq(747,748, other).
+pseq(748,749, other).
+pseq(749,750, other).
+pseq(750,751, other).
+pseq(751,752, other).
+pseq(752,753, other).
+pseq(753,754, other).
+pseq(754,755, other).
+pseq(755,756, other).
+pseq(756,757, other).
+pseq(757,758, other).
+pseq(758,759, other).
+pseq(759,760, other).
+pseq(760,761, other).
+pseq(761,762, other).
+pseq(762,763, other).
+pseq(763,764, other).
+pseq(764,765, other).
+pseq(765,766, other).
+pseq(766,767, other).
+pseq(767,768, other).
+pseq(768,769, other).
+pseq(769,770, other).
+pseq(770,771, other).
+pseq(771,772, other).
+pseq(772,773, other).
+pseq(773,774, other).
+pseq(774,775, other).
+pseq(775,776, other).
+pseq(776,777, other).
+pseq(777,778, other).
+pseq(778,779, other).
+pseq(779,780, other).
+pseq(780,781, other).
+pseq(781,782, other).
+pseq(782,783, other).
+pseq(783,784, other).
+pseq(784,785, other).
+pseq(785,786, other).
+pseq(786,787, other).
+pseq(787,788, other).
+pseq(788,789, other).
+pseq(789,790, other).
+pseq(790,791, other).
+pseq(791,792, other).
+pseq(792,793, other).
+pseq(793,794, other).
+pseq(794,795, other).
+pseq(795,796, other).
+pseq(796,797, other).
+pseq(797,798, other).
+pseq(798,799, other).
+pseq(799,800, other).
+pseq(800,801, other).
+pseq(801,802, other).
+pseq(802,803, other).
+pseq(803,804, other).
+pseq(804,805, other).
+pseq(805,806, other).
+pseq(806,807, other).
+pseq(807,808, other).
+pseq(808,809, other).
+pseq(809,810, other).
+pseq(810,811, other).
+pseq(811,812, other).
+pseq(812,813, other).
+pseq(813,814, other).
+pseq(814,815, other).
+pseq(815,816, other).
+pseq(816,817, other).
+pseq(817,818, other).
+pseq(818,819, other).
+pseq(819,820, other).
+pseq(820,821, other).
+pseq(821,822, other).
+pseq(822,823, other).
+pseq(823,824, other).
+pseq(824,825, other).
+pseq(825,826, other).
+pseq(826,827, other).
+pseq(827,828, other).
+pseq(828,829, other).
+pseq(829,830, other).
+pseq(830,831, other).
+pseq(831,832, other).
+pseq(832,833, other).
+pseq(833,834, other).
+pseq(834,835, other).
+pseq(835,836, other).
+pseq(836,837, other).
+pseq(837,838, other).
+pseq(838,839, other).
+pseq(839,840, other).
+pseq(840,841, other).
+pseq(841,842, other).
+pseq(842,843, other).
+pseq(843,844, other).
+pseq(844,845, other).
+pseq(845,846, other).
+pseq(846,847, other).
+pseq(847,848, other).
+pseq(848,849, other).
+pseq(849,850, other).
+pseq(850,851, other).
+pseq(851,852, other).
+pseq(852,853, other).
+pseq(853,854, other).
+pseq(854,855, other).
+pseq(855,856, other).
+pseq(856,857, other).
+pseq(857,858, other).
+pseq(858,859, other).
+pseq(859,860, other).
+pseq(860,861, other).
+pseq(861,862, other).
+pseq(862,863, other).
+pseq(863,864, other).
+pseq(864,865, other).
+pseq(865,866, other).
+pseq(866,867, other).
+pseq(867,868, other).
+pseq(868,869, other).
+pseq(869,870, other).
+pseq(870,871, other).
+pseq(871,872, other).
+pseq(872,873, other).
+pseq(873,874, other).
+pseq(874,875, other).
+pseq(875,876, other).
+pseq(876,877, other).
+pseq(877,878, other).
+pseq(878,879, other).
+pseq(879,880, other).
+pseq(880,881, other).
+pseq(881,882, other).
+pseq(882,883, other).
+pseq(883,884, other).
+pseq(884,885, other).
+pseq(885,886, other).
+pseq(886,887, other).
+pseq(887,888, other).
+pseq(888,889, other).
+pseq(889,890, other).
+pseq(890,891, other).
+pseq(891,892, other).
+pseq(892,893, other).
+pseq(893,894, other).
+pseq(894,895, other).
+pseq(895,896, other).
+pseq(896,897, other).
+pseq(897,898, other).
+pseq(898,899, other).
+pseq(899,900, other).
+pseq(900,901, other).
+pseq(901,902, other).
+pseq(902,903, other).
+pseq(903,904, other).
+pseq(904,905, other).
+pseq(905,906, other).
+pseq(906,907, other).
+pseq(907,908, other).
+pseq(908,909, other).
+pseq(909,910, other).
+pseq(910,911, other).
+pseq(911,912, other).
+pseq(912,913, other).
+pseq(913,914, other).
+pseq(914,915, other).
+pseq(915,916, other).
+pseq(916,917, other).
+pseq(917,918, other).
+pseq(918,919, other).
+pseq(919,920, other).
+pseq(920,921, other).
+pseq(921,922, other).
+pseq(922,923, other).
+pseq(923,924, other).
+pseq(924,925, other).
+pseq(925,926, other).
+pseq(926,927, other).
+pseq(927,928, other).
+pseq(928,929, other).
+pseq(929,930, other).
+pseq(930,931, other).
+pseq(931,932, other).
+pseq(932,933, other).
+pseq(933,934, other).
+pseq(934,935, other).
+pseq(935,936, other).
+pseq(936,937, other).
+pseq(937,938, other).
+pseq(938,939, other).
+pseq(939,940, other).
+pseq(940,941, other).
+pseq(941,942, other).
+pseq(942,943, other).
+pseq(943,944, other).
+pseq(944,945, other).
+pseq(945,946, other).
+pseq(946,947, other).
+pseq(947,948, other).
+pseq(948,949, other).
+pseq(949,950, other).
+pseq(950,951, other).
+pseq(951,952, other).
+pseq(952,953, other).
+pseq(953,954, other).
+pseq(954,955, other).
+pseq(955,956, other).
+pseq(956,957, other).
+pseq(957,958, other).
+pseq(958,959, other).
+pseq(959,960, other).
+pseq(960,961, other).
+pseq(961,962, other).
+pseq(962,963, other).
+pseq(963,964, other).
+pseq(964,965, other).
+pseq(965,966, other).
+pseq(966,967, other).
+pseq(967,968, other).
+pseq(968,969, other).
+pseq(969,970, other).
+pseq(970,971, other).
+pseq(971,972, other).
+pseq(972,973, other).
+pseq(973,974, other).
+pseq(974,975, other).
+pseq(975,976, other).
+pseq(976,977, other).
+pseq(977,978, other).
+pseq(978,979, other).
+pseq(979,980, other).
+pseq(980,981, other).
+pseq(981,982, other).
+pseq(982,983, other).
+pseq(983,984, other).
+pseq(984,985, other).
+pseq(985,986, other).
+pseq(986,987, other).
+pseq(987,988, other).
+pseq(988,989, other).
+pseq(989,990, other).
+pseq(990,991, other).
+pseq(991,992, other).
+pseq(992,993, other).
+pseq(993,994, other).
+pseq(994,995, other).
+pseq(995,996, other).
+pseq(996,997, other).
+pseq(997,998, other).
+pseq(998,999, other).
+pseq(999,1000, other).
+pseq(1000,1001, other).
+pseq(1001,1002, other).
+pseq(1002,1003, other).
+pseq(1003,1004, other).
+pseq(1004,1005, other).
+pseq(1005,1006, other).
+pseq(1006,1007, other).
+pseq(1007,1008, other).
+pseq(1008,1009, other).
+pseq(1009,1010, other).
+pseq(1010,1011, other).
+pseq(1011,1012, other).
+pseq(1012,1013, other).
+pseq(1013,1014, other).
+pseq(1014,1015, other).
+pseq(1015,1016, other).
+pseq(1016,1017, other).
+pseq(1017,1018, other).
+pseq(1018,1019, other).
+pseq(1019,1020, other).
+pseq(1020,1021, other).
+pseq(1021,1022, other).
+pseq(1022,1023, other).
+pseq(1023,1024, other).
