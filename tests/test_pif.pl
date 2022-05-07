@@ -1,7 +1,7 @@
 :- use_module('../prolog/purity.pl').
 :- use_module('../prolog/plist.pl').
-:- use_module('../prolog/pseq.pl').
 :- use_module('../prolog/pchar.pl').
+:- use_module('../prolog/punary.pl').
 
 purity:pcompare(A, B, C) :- pchar_compare(A, B, C).
 
@@ -22,16 +22,14 @@ p2_last_but_one([_,B,C|T], E) :- p2_last_but_one([B,C|T], E).
 % Example:
 % ?- element_at(X,[a,b,c,d,e],3).
 % X = c
-element_at(C, [C|_], 1).
-element_at(C, [_|T], N) :-
-    pseq(N0, N),
-    element_at(C, T, N0).
+element_at(C, [C|_], c(z)).
+element_at(C, [_|T], c(c(N))) :-
+    element_at(C, T, c(N)).
 
 % P04 (*) Find the number of elements of a list.
-n_elements([], 0).
-n_elements([_|T], N) :-
-    n_elements(T, N0),
-    pseq(N0, N).
+n_elements([], z).
+n_elements([_|T], c(N)) :-
+    n_elements(T, N).
 
 % P05 (*) Reverse a list.
 % solution taken from https://courses.cs.washington.edu/courses/cse341/10wi/clpr/difference_lists.clpr
@@ -109,10 +107,9 @@ encode(List, Encoded) :-
 encoded_counted(Packed, [N, A]) :-
     encoded_counted(Packed, A, N).
 
-encoded_counted([A], A, 1).
-encoded_counted([A|T], A, N) :-
-    pseq(N0, N),
-    encoded_counted(T, A, N0).
+encoded_counted([A], A, c(z)).
+encoded_counted([A|T], A, c(c(N))) :-
+    encoded_counted(T, A, c(N)).
 
 % P11 (*) Modified run-length encoding.
 %    Modify the result of problem P10 in such a way that if an element has no duplicates it is simply copied into the result list. Only elements with duplicates are transferred as [N,E] terms.
@@ -126,26 +123,26 @@ encode_modified(List, Encoded) :-
 
 encoded_counted_mod(Packed, R) :-
     encoded_counted_mod(Packed, D, N),
-    pif(pseq_one_t(N), R = D, R = [N, D]).
+    encode_by_type(N, D, R).
 
-encoded_counted_mod([A], A, 1).
-encoded_counted_mod([A|T], A, N) :-
-    pseq(N0, N),
-    encoded_counted_mod(T, A, N0).
+encode_by_type(c(z), D, D).
+encode_by_type(c(c(N)), D, [c(c(N)), D]).
+
+encoded_counted_mod([A], A, c(z)).
+encoded_counted_mod([A|T], A, c(c(N))) :-
+    encoded_counted_mod(T, A, c(N)).
 
 
 % P12 (**) Decode a run-length encoded list.
 %    Given a run-length code list generated as specified in problem P11. Construct its uncompressed version.
 decode([], []).
 decode([X|T], [X|D]) :- 
-    ptype(X, domain), 
+    ptype(X, domain),
     decode(T, D).
-decode([[1,X]|T], [X|D]) :- 
+decode([[c(z),X]|T], [X|D]) :- 
     decode(T,D).
-decode([[N,X]|T], [X|D]) :- 
-    pseq_other_t(N, true), 
-    pseq(N0,N), 
-    decode([[N0,X]|T], D).
+decode([[c(c(N)),X]|T], [X|D]) :- 
+    decode([[c(N),X]|T], D).
 
 
 % P13 (**) Run-length encoding of a list (direct solution).
@@ -155,18 +152,18 @@ decode([[N,X]|T], [X|D]) :-
 %    ?- encode_direct([a,a,a,a,b,c,c,a,a,d,e,e,e,e],X).
 %    X = [[4,a],b,[2,c],[2,a],d,[4,e]]
 encode_direct([],[]).
-encode_direct([X|Xs],[Z|Zs]) :- count(X,Xs,Ys,1,Z), encode_direct(Ys,Zs).
+encode_direct([X|Xs],[Z|Zs]) :- count(X,Xs,Ys,c(z),Z), encode_direct(Ys,Zs).
 
 % count(X,Xs,Ys,K,T) Ys is the list that remains from the list Xs
 %    when all leading copies of X are removed. T is the term [N,X],
 %    where N is K plus the number of X's that can be removed from Xs.
 %    In the case of N=1, T is X, instead of the term [1,X].
 
-count(X,[],[],1,X).
-count(X,[],[],N,[N,X]) :- pseq_other_t(N, true). 
-count(X,[Y|Ys],[Y|Ys],1,X) :- pdif(X, Y).
-count(X,[Y|Ys],[Y|Ys],N,[N,X]) :- pseq_other_t(N, true), pdif(X, Y).
-count(X,[X|Xs],Ys,K,T) :- pseq(K, K1), count(X,Xs,Ys,K1,T).
+count(X,[],[],c(z),X).
+count(X,[],[],c(c(N)),[c(c(N)),X]). 
+count(X,[Y|Ys],[Y|Ys],c(z),X) :- pdif(X, Y).
+count(X,[Y|Ys],[Y|Ys],c(c(N)),[c(c(N)),X]) :- pdif(X, Y).
+count(X,[X|Xs],Ys,N,T) :- count(X,Xs,Ys,c(N),T).
 
 
 % P14 (*) Duplicate the elements of a list.
@@ -184,12 +181,11 @@ dupli([X|T],[X,X|R]) :- dupli(T,R).
 %    What are the results of the goal:
 %    ?- dupli(X,3,Y).
 dupli([],_,[]).
-dupli([X|Xs],N,Ys) :- duplix(X,N,Ys-T), dupli(Xs,N,T).
+dupli([X|Xs],N,Ys) :- duplix(N,X,Ys-T), dupli(Xs,N,T).
 
-duplix(_,0,T-T).
-duplix(X,N,[X|R]-T) :-
-    pseq(N0,N),
-    duplix(X,N0,R-T).
+duplix(z,_,T-T).
+duplix(c(N),X,[X|R]-T) :-
+    duplix(N,X,R-T).
 
 % P16 (**) Drop every N'th element from a list.
 %    Example:
@@ -198,12 +194,10 @@ duplix(X,N,[X|R]-T) :-
 drop(Xs,N,Ys) :- drop(Xs,N,N,Ys).
 
 drop([],_,_,[]).
-drop([_|Xs],N,1,Ys) :- 
+drop([_|Xs],N,c(z),Ys) :- 
     drop(Xs,N,N,Ys).
-drop([X|Xs],N,Nc,[X|Ys]) :- 
-    pseq_other_t(Nc, true), 
-    pseq(Nc0,Nc), 
-    drop(Xs,N,Nc0,Ys).
+drop([X|Xs],N,c(c(Nc)),[X|Ys]) :- 
+    drop(Xs,N,c(Nc),Ys).
 
 % P17 (*) Split a list into two parts; the length of the first part is given.
 %    Do not use any predefined predicates.
@@ -212,10 +206,9 @@ drop([X|Xs],N,Nc,[X|Ys]) :-
 %    ?- split([a,b,c,d,e,f,g,h,i,k],3,L1,L2).
 %    L1 = [a,b,c]
 %    L2 = [d,e,f,g,h,i,k]
-split(L,0,[],L).
-split([X|Xs],N,[X|Ys],L2) :- 
-    pseq(N0,N), 
-    split(Xs,N0,Ys,L2).
+split(L,z,[],L).
+split([X|Xs],c(N),[X|Ys],L2) :- 
+    split(Xs,N,Ys,L2).
 
 
 % P18 (**) Extract a slice from a list.
@@ -224,18 +217,14 @@ split([X|Xs],N,[X|Ys],L2) :-
 %    Example:
 %    ?- slice([a,b,c,d,e,f,g,h,i,k],3,7,L).
 %    X = [c,d,e,f,g]
-slice([X|Xs],1,End,[X|Ys]) :-
-    pseq(End0,End), 
-    slice(Xs,End0,Ys).
-slice([_|Xs],Start,End,Ys) :-
-    pseq(Start0,Start), 
-    pseq(End0,End), 
-    slice(Xs,Start0,End0,Ys).
+slice([X|Xs],c(z),c(End),[X|Ys]) :- 
+    slice(Xs,End,Ys).
+slice([_|Xs],c(Start),c(End),Ys) :- 
+    slice(Xs,Start,End,Ys).
 
-slice([X|_],1,[X]).
-slice([X|Xs],End,[X|Ys]) :- 
-    pseq(End0,End), 
-    slice(Xs,End0,Ys).
+slice([X|_],c(z),[X]).
+slice([X|Xs],c(End),[X|Ys]) :-  
+    slice(Xs,End,Ys).
 
 % P19 (**) Rotate a list N places to the left.
 %    Examples:
@@ -246,3 +235,10 @@ slice([X|Xs],End,[X|Ys]) :-
 %    X = [g,h,a,b,c,d,e,f]
 %
 %    Hint: Use the predefined predicates length/2 and append/3, as well as the result of problem P17.
+rotate(left(N), List, Result) :-
+    split(List, N, L1, L2),
+    append(L2, L1, Result).
+rotate(right(N), List, Result) :-
+    plength(List, Len),
+    add(NDiff, N, Len) ,
+    rotate(left(c(NDiff)), List, Result).

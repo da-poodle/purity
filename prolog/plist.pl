@@ -117,34 +117,34 @@ plist([_|_]).
 % T = the tail of List
 % Z = recursive part of Length
 %
-plength([], zero).
+plength([], z).
 plength([_|T], c(Z)) :- plength(T, Z).
 
 
 % pnth0(Nth, Val, List).
 %
-% Val is the Nth element in List starting at zero.
+% Val is the Nth element in List starting at z.
 % Nth is a punary number.
 %
 % V = Val
 % T = the tail of List
 % Z = the recursive part of Nth.
 %
-pnth0(zero, V, [V|_]).
+pnth0(z, V, [V|_]).
 pnth0(c(Z), V, [_|T]) :-
     pnth0(Z, V, T).
 
 
 % pnth1(Nth, Val, List).
 %
-% Val is the Nth element in List starting at c(zero).
+% Val is the Nth element in List starting at c(z).
 % Nth is a punary number.
 %
 % V = Val
 % T = the tail of List
 % Z = the recursive part of Nth.
 %
-pnth1(c(zero), V, [V|_]).
+pnth1(c(z), V, [V|_]).
 pnth1(c(c(Z)), V, [_|T]) :-
     pnth1(c(Z), V, T).
 
@@ -217,8 +217,8 @@ non_member_([A|T], B) :-
 % Start = Before
 % Sub = SubList
 %
-% match! the start is a zero from now on    
-psublist([A|T], zero, c(Len), End, [A|St]) :-
+% match! the start is a z from now on    
+psublist([A|T], z, c(Len), End, [A|St]) :-
     psublist_(T, Len, End, St).
 
 % no match yet, nothing to see here, increment the start
@@ -226,7 +226,7 @@ psublist([_|T], c(Start), Len, End, Sub) :-
     psublist(T, Start, Len, End, Sub).
 
 % single character substring, ok, one length?
-psublist_(L, zero, End, []) :-
+psublist_(L, z, End, []) :-
     plength(L, End).
 
 % in the match, counting...
