@@ -22,12 +22,12 @@ p2_last_but_one([_,B,C|T], E) :- p2_last_but_one([B,C|T], E).
 % Example:
 % ?- element_at(X,[a,b,c,d,e],3).
 % X = c
-element_at(C, [C|_], c(z)).
+element_at(C, [C|_], c(zero)).
 element_at(C, [_|T], c(c(N))) :-
     element_at(C, T, c(N)).
 
 % P04 (*) Find the number of elements of a list.
-n_elements([], z).
+n_elements([], zero).
 n_elements([_|T], c(N)) :-
     n_elements(T, N).
 
@@ -107,7 +107,7 @@ encode(List, Encoded) :-
 encoded_counted(Packed, [N, A]) :-
     encoded_counted(Packed, A, N).
 
-encoded_counted([A], A, c(z)).
+encoded_counted([A], A, c(zero)).
 encoded_counted([A|T], A, c(c(N))) :-
     encoded_counted(T, A, c(N)).
 
@@ -125,10 +125,10 @@ encoded_counted_mod(Packed, R) :-
     encoded_counted_mod(Packed, D, N),
     encode_by_type(N, D, R).
 
-encode_by_type(c(z), D, D).
+encode_by_type(c(zero), D, D).
 encode_by_type(c(c(N)), D, [c(c(N)), D]).
 
-encoded_counted_mod([A], A, c(z)).
+encoded_counted_mod([A], A, c(zero)).
 encoded_counted_mod([A|T], A, c(c(N))) :-
     encoded_counted_mod(T, A, c(N)).
 
@@ -139,7 +139,7 @@ decode([], []).
 decode([X|T], [X|D]) :- 
     ptype(X, domain),
     decode(T, D).
-decode([[c(z),X]|T], [X|D]) :- 
+decode([[c(zero),X]|T], [X|D]) :- 
     decode(T,D).
 decode([[c(c(N)),X]|T], [X|D]) :- 
     decode([[c(N),X]|T], D).
@@ -152,16 +152,16 @@ decode([[c(c(N)),X]|T], [X|D]) :-
 %    ?- encode_direct([a,a,a,a,b,c,c,a,a,d,e,e,e,e],X).
 %    X = [[4,a],b,[2,c],[2,a],d,[4,e]]
 encode_direct([],[]).
-encode_direct([X|Xs],[Z|Zs]) :- count(X,Xs,Ys,c(z),Z), encode_direct(Ys,Zs).
+encode_direct([X|Xs],[Z|Zs]) :- count(X,Xs,Ys,c(zero),Z), encode_direct(Ys,Zs).
 
 % count(X,Xs,Ys,K,T) Ys is the list that remains from the list Xs
 %    when all leading copies of X are removed. T is the term [N,X],
 %    where N is K plus the number of X's that can be removed from Xs.
 %    In the case of N=1, T is X, instead of the term [1,X].
 
-count(X,[],[],c(z),X).
+count(X,[],[],c(zero),X).
 count(X,[],[],c(c(N)),[c(c(N)),X]). 
-count(X,[Y|Ys],[Y|Ys],c(z),X) :- pdif(X, Y).
+count(X,[Y|Ys],[Y|Ys],c(zero),X) :- pdif(X, Y).
 count(X,[Y|Ys],[Y|Ys],c(c(N)),[c(c(N)),X]) :- pdif(X, Y).
 count(X,[X|Xs],Ys,N,T) :- count(X,Xs,Ys,c(N),T).
 
@@ -183,7 +183,7 @@ dupli([X|T],[X,X|R]) :- dupli(T,R).
 dupli([],_,[]).
 dupli([X|Xs],N,Ys) :- duplix(N,X,Ys-T), dupli(Xs,N,T).
 
-duplix(z,_,T-T).
+duplix(zero,_,T-T).
 duplix(c(N),X,[X|R]-T) :-
     duplix(N,X,R-T).
 
@@ -194,7 +194,7 @@ duplix(c(N),X,[X|R]-T) :-
 drop(Xs,N,Ys) :- drop(Xs,N,N,Ys).
 
 drop([],_,_,[]).
-drop([_|Xs],N,c(z),Ys) :- 
+drop([_|Xs],N,c(zero),Ys) :- 
     drop(Xs,N,N,Ys).
 drop([X|Xs],N,c(c(Nc)),[X|Ys]) :- 
     drop(Xs,N,c(Nc),Ys).
@@ -206,7 +206,7 @@ drop([X|Xs],N,c(c(Nc)),[X|Ys]) :-
 %    ?- split([a,b,c,d,e,f,g,h,i,k],3,L1,L2).
 %    L1 = [a,b,c]
 %    L2 = [d,e,f,g,h,i,k]
-split(L,z,[],L).
+split(L,zero,[],L).
 split([X|Xs],c(N),[X|Ys],L2) :- 
     split(Xs,N,Ys,L2).
 
@@ -217,12 +217,12 @@ split([X|Xs],c(N),[X|Ys],L2) :-
 %    Example:
 %    ?- slice([a,b,c,d,e,f,g,h,i,k],3,7,L).
 %    X = [c,d,e,f,g]
-slice([X|Xs],c(z),c(End),[X|Ys]) :- 
+slice([X|Xs],c(zero),c(End),[X|Ys]) :- 
     slice(Xs,End,Ys).
 slice([_|Xs],c(Start),c(End),Ys) :- 
     slice(Xs,Start,End,Ys).
 
-slice([X|_],c(z),[X]).
+slice([X|_],c(zero),[X]).
 slice([X|Xs],c(End),[X|Ys]) :-  
     slice(Xs,End,Ys).
 

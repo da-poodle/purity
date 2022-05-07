@@ -49,7 +49,7 @@ ptype(hex(_), hex).
 ptype(hex2(_), hex2).
 ptype([], list).
 ptype([_|_], list).
-ptype(z, unary).
+ptype(zero, unary).
 ptype(c(_), unary).
 
 :- meta_predicate(pif(1, 0, 0)).
