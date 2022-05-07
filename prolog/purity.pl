@@ -84,9 +84,9 @@
     pstr_split/3,
     pstr_join/3,
     pstr_contains/2,
-    pstr_contains/3,
+    pstr_contains_t/3,
     pstr_prefix/2,
-    pstr_prefix/3,
+    pstr_prefix_t/3,
     pstr_trim/2,
     pstr_replace/4
 ]).
@@ -678,7 +678,7 @@ pstr_lower([C|T], [L|R]) :-
 % pstr_replace(String, Find, Replace, Replaced).
 pstr_replace([], _, _, []).
 pstr_replace([A|T], F, R, Rp) :-
-    pstr_prefix(F, [A|T], IsPrefix),
+    pstr_prefix_t(F, [A|T], IsPrefix),
     pstr_replace_(IsPrefix, [A|T], F, R, Rp).
 
 pstr_replace_(true, Orig, F, R, Rp) :-
@@ -760,30 +760,30 @@ pstr_join2([N|T], D, [D|R]) :-
 
 % pstr_contains(String, SubString).
 pstr_contains(String, SubString) :-
-    pstr_contains(String, SubString, true).
+    pstr_contains_t(String, SubString, true).
 
 % pstr_contains(String, SubString, Contains).
-pstr_contains([], _, false). 
-pstr_contains([A|T], B, C) :-
-    pstr_prefix(B, [A|T], Prefix),
+pstr_contains_t([], _, false). 
+pstr_contains_t([A|T], B, C) :-
+    pstr_prefix_t(B, [A|T], Prefix),
     pstr_contains_(Prefix, [A|T], B, C).
 
 pstr_contains_(true, _, _, true).
 pstr_contains_(false, [_|At], B, C) :-
-    pstr_contains(At, B, C).
+    pstr_contains_t(At, B, C).
 
 % pstr_prefix(Prefix, String).
 pstr_prefix(Prefix, String) :-
-    pstr_prefix(Prefix, String, true).
+    pstr_prefix_t(Prefix, String, true).
 
 % pstr_prefix(Prefix, String, IsPrefix).
-pstr_prefix([], _, true).
-pstr_prefix([A|At], [B|Bt], IsPrefix) :-
+pstr_prefix_t([], _, true).
+pstr_prefix_t([A|At], [B|Bt], IsPrefix) :-
     pchar_compare(A, B, C),
     pstr_prefix(C, At, Bt, IsPrefix).
 
 pstr_prefix(=, At, Bt, B) :- 
-    pstr_prefix(At, Bt, B).
+    pstr_prefix_t(At, Bt, B).
 pstr_prefix(<, _, _, false).
 pstr_prefix(>, _, _, false).
 
