@@ -1,7 +1,4 @@
 :- use_module('../prolog/purity.pl').
-:- use_module('../prolog/plist.pl').
-:- use_module('../prolog/pchar.pl').
-:- use_module('../prolog/punary.pl').
 
 purity:pcompare(A, B, C) :- pchar_compare(A, B, C).
 
