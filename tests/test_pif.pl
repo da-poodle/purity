@@ -267,3 +267,28 @@ range(c(N), c(N), [c(N)]).
 range(N, N1, [N|T]) :-
     unary_compare(N, N1, <),
     range(c(N), N1, T).
+
+
+/* skipping a few exercises until I find a way to do randomness */
+
+
+% P26 (**) Generate the combinations of K distinct objects chosen from the N elements of a list
+% In how many ways can a committee of 3 be chosen from a group of 12 people? We all know that there are C(12,3) = 220 possibilities (C(N,K) denotes the well-known binomial coefficients). For pure mathematicians, this result may be great. But we want to really generate all the possibilities (via backtracking).
+%
+% Example:
+% ?- combination(3,[a,b,c,d,e,f],L).
+% L = [a,b,c] ;
+% L = [a,b,d] ;
+% L = [a,b,e] ;
+% ...
+combination(N, L, R) :-
+    plength(R, N),
+    select_all(R, L).
+
+select_all([], _).
+select_all([A|T], L) :-
+    el(A,L,Next),
+    select_all(T,Next).
+
+el(X,[X|L],L).
+el(X,[_|L],R) :- el(X,L,R).
