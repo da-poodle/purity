@@ -239,3 +239,31 @@ rotate(right(N), List, Result) :-
     plength(List, Len),
     add(NDiff, N, Len) ,
     rotate(left(c(NDiff)), List, Result).
+
+% P20 (*) Remove the K'th element from a list.
+% Example:
+% ?- remove_at(X,[a,b,c,d],2,R).
+% X = b
+% R = [a,c,d]
+remove_at_(c(zero), [X|T], X, T).
+remove_at_(c(c(N)), [A|T], X, [A|R]) :-
+    remove_at_(c(N), T, X, R).
+
+remove_at(X, List, N, R) :-
+    remove_at_(N, List, X, R).
+
+% P21 (*) Insert an element at a given position into a list.
+% Example:
+% ?- insert_at(alfa,[a,b,c,d],2,L).
+% L = [a,alfa,b,c,d]
+insert_at(E, List, Pos, Result) :-
+    remove_at_(Pos, Result, E, List).
+
+% P22 (*) Create a list containing all integers within a given range.
+% Example:
+% ?- range(4,9,L).
+% L = [4,5,6,7,8,9]
+range(c(N), c(N), [c(N)]).
+range(N, N1, [N|T]) :-
+    unary_compare(N, N1, <),
+    range(c(N), N1, T).
