@@ -208,6 +208,9 @@ compare_with_states(StateGoal, A, B, Truth) :-
     LISTS
 */
 /*
+
+These predicates apply to a prolog system that doesn't have inbuilt library predicates.
+
 % member/2
 member(A,[A|_]).
 member(A,[_|T]) :-

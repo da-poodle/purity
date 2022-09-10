@@ -17,10 +17,13 @@ valid_depth(c(Z), c(A), c(B)) :-
 
 n_nodes(nil, zero).
 n_nodes(t(_,L,R), c(N)) :-
-    add(Nl,Nr,N),
     n_nodes(L,Nl),
-    n_nodes(R,Nr).
+    n_nodes(R,Nr),
+    add(Nl,Nr,N).
 
-add(zero, Z, Z).
+add(zero, Z, Z) :- unary(Z).
 add(c(X), Y, c(Z)) :- 
 	add(X, Y, Z).
+
+unary(zero).
+unary(c(Z)) :- unary(Z).
