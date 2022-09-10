@@ -16,10 +16,10 @@ remove_seq([A,B|T], A, [B|T]) :-
     pdif(A,B).
 
 pdif(A,B) :-
-   pcompare([a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z], A, B). 
+   pdif([a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z], A, B). 
 
-pcompare(L, A, B) :- before_in_list(L, A, B).
-pcompare(L, A, B) :- before_in_list(L, B, A).
+pdif(L, A, B) :- before_in_list(L, A, B).
+pdif(L, A, B) :- before_in_list(L, B, A).
 
 before_in_list([A|T],A,B) :-
     pmember(B,T).
