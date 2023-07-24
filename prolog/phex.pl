@@ -1,14 +1,12 @@
 :- module(phex, []).
 
-:- multifile(pcompare/3).
+:- multifile(pcompare/4).
 :- multifile(ptype/2).
 
-% hex_compare(Hex1,Hex2,Comparison).
-purity:pcompare(hex(A), hex(B), C) :-
+purity:pcompare(hex, hex(A), hex(B), C) :-
     hex_map(A, B, C).
 
-% hex2_compare(Hex1,Hex2,Comparison).
-purity:pcompare(hex2(A1,B1), hex2(A2,B2), C) :-
+purity:pcompare(hex2, hex2(A1,B1), hex2(A2,B2), C) :-
     hex_map(A1, A2, Ch1),
     hex2_cmp(Ch1, B1, B2, C).
 

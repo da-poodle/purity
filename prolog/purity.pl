@@ -13,10 +13,15 @@
     '>='/3
 ]).
 
-:- multifile(pcompare/3).
+:- multifile(pcompare/4).
 :- multifile(ptype/2).
 
 :- meta_predicate(pif(1, 0, 0)).
+
+pcompare(A, B, C) :-
+    ptype(A, T),
+    ptype(B, T),
+    pcompare(T, A, B, C).
 
 pif(Goal, TrueGoal, FalseGoal) :-
     call(Goal, R),
