@@ -15,6 +15,8 @@
     psort/2
 ]).
 
+:- use_module(purity).
+
 :- multifile(purity:pcompare/4).
 :- multifile(purity:ptype/2).
 

@@ -6,10 +6,11 @@
     pchar_hex2/2
 ]).
 
+:- use_module(purity).
+:- use_module(phex).
+
 :- multifile(purity:pcompare/4).
 :- multifile(purity:ptype/2).
-
-:- use_module(phex).
 
 purity:pcompare(pchar, A, B, C) :-
     pchar_hex2(A, Ah),
