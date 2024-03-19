@@ -1,29 +1,12 @@
-:-  module(plist, [
-    plength/2,
-    pnth0/3,
-    pnth1/3,
-    pmember/3,
-    pmemberchk/2,    
-    psublist/5,
-    pfilter/3,
-    ppartition/4,
-    pinclude/3,
-    pexclude/3,
-    non_member/2,
-    remove_dups/2,
-    list_join/3,
-    psort/2
-]).
+:- ensure_loaded(purity).
 
-:- use_module(purity).
+:- multifile(pcompare/4).
+:- multifile(ptype/2).
 
-:- multifile(purity:pcompare/4).
-:- multifile(purity:ptype/2).
-
-purity:ptype([], plist).
-purity:ptype([_|_], plist).
+ptype([], plist).
+ptype([_|_], plist).
  
-purity:pcompare(plist, L1, L2, C) :-
+pcompare(plist, L1, L2, C) :-
     plist_compare(L1, L2, C).
  
 plist_compare([],S,C) :- plist_compare_0(S, C).
@@ -58,27 +41,28 @@ pnth1(c(zero), V, [V|_]).
 pnth1(c(c(Z)), V, [_|T]) :-
     pnth1(c(Z), V, T).
 
-% pmember(Element, List, Truth).
-pmember(Element, List, Truth) :-
-   pmember_(List, Element, Truth).
+% pmemberchk(Element, List, Truth).
+pmemberchk(Element, List, Truth) :-
+   pmemberchk_(List, Element, Truth).
 
-pmember_([], _, false).
-pmember_([X|Xs], Element, Truth) :-
+pmemberchk_t([], _, false).
+pmemberchk_t([X|Xs], Element, Truth) :-
    pif( X = Element, 
         Truth = true, 
-        pmember_(Xs, Element, Truth) 
+        pmemberchk_t(Xs, Element, Truth) 
     ).
 
 % pmemberchk(Element, List).
+pmemberchk(A,[B|T]) :-
+	pcompare(A, B, C ),
+	pmemberchk_(C,A,T).
+
 pmemberchk_(=,_,_).
 pmemberchk_(>,A,L) :-
 	pmemberchk(A,L).
 pmemberchk_(<,A,L) :-
 	pmemberchk(A,L).
 
-pmemberchk(A,[B|T]) :-
-	pcompare(A, B, C ),
-	pmemberchk_(C,A,T).
 
 
 % non_member(Element, List).
@@ -136,7 +120,7 @@ pfilter(Goal, Elements, Filtered) :-
 
 pfilter_([], _, []).
 pfilter_([E|Es], Goal, Filtered) :-
-   pif(call(Goal, E), Filtered = [E|Fs], Filtered = Fs),
+   pif(pcall(Goal, E), Filtered = [E|Fs], Filtered = Fs),
    pfilter_(Es, Goal, Fs).
 
 % ppartition(Goal, List, Included, Excluded).
@@ -145,7 +129,7 @@ ppartition(G,L,I,E) :-
 
 ppartition_([],_,[],[]).
 ppartition_([A|T],G,I,E) :-
-    call(G,A,B),
+    pcall(G,A,B),
     ppartition__(B,[A|T],G,I,E).
 
 ppartition__(true, [A|T],G,[A|I],E) :- 

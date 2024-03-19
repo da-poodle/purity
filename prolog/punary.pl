@@ -1,22 +1,12 @@
-:- module(punary, [
-    unary/1,
-    pow/3,
-    string_unary/2,
-    unary_string/2,
-    add/3,
-    mul/3,
-    div/4
-]).
+:- ensure_loaded(purity).
 
-:- use_module(purity).
+:- multifile(pcompare/4).
+:- multifile(ptype/2).
 
-:- multifile(purity:pcompare/4).
-:- multifile(purity:ptype/2).
+ptype(zero, punary).
+ptype(c(_), punary).
 
-purity:ptype(zero, punary).
-purity:ptype(c(_), punary).
-
-purity:pcompare(punary, A, B, C) :-
+pcompare(punary, A, B, C) :-
     unary_compare(A, B, C).
 
 % unary_compare(Unary1, Unary2, Comparator).

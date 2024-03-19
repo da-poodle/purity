@@ -1,19 +1,6 @@
-:- module(pstring, [
-   pstr_upper/2,
-   pstr_lower/2,
-   pstr_split/3,
-   pstr_join/3,
-   pstr_contains/2,
-   pstr_contains_t/3,
-   pstr_prefix/2,
-   pstr_prefix_t/3,
-   pstr_trim/2,
-   pstr_replace/4
-]).
-
-:- use_module(purity).
-:- use_module(pchar).
-:- use_module(plist).
+:- ensure_loaded(purity).
+:- ensure_loaded(pchar).
+:- ensure_loaded(plist).
 
 % pstr_upper(String, Upper).
 pstr_upper([], []).

@@ -1,124 +1,116 @@
-:- module(pchar, [
-    pchar_upper/2,
-    pchar_lower/2,
-    pchar_type/2,
-    pchar_code/2,
-    pchar_hex2/2
-]).
+:- ensure_loaded(purity).
+:- ensure_loaded(phex).
 
-:- use_module(purity).
-:- use_module(phex).
+:- multifile(pcompare/4).
+:- multifile(ptype/2).
 
-:- multifile(purity:pcompare/4).
-:- multifile(purity:ptype/2).
-
-purity:pcompare(pchar, A, B, C) :-
+pcompare(pchar, A, B, C) :-
     pchar_hex2(A, Ah),
     pchar_hex2(B, Bh),
-    purity:pcompare(Ah,Bh,C).
+    pcompare(Ah,Bh,C).
  
- % pchar_upper(Char, UpperChar).
- pchar_upper(C, U) :- ch_map(C, _, U).
+% pchar_upper(Char, UpperChar).
+pchar_upper(C, U) :- ch_map(C, _, U).
  
- % pchar_lower(Char, LowerChar).
- pchar_lower(C, L) :- ch_map(C, L, _).
+% pchar_lower(Char, LowerChar).
+pchar_lower(C, L) :- ch_map(C, L, _).
  
-purity:ptype( a, pchar).
-purity:ptype( b, pchar).
-purity:ptype( c, pchar).
-purity:ptype( d, pchar).
-purity:ptype( e, pchar).
-purity:ptype( f, pchar).
-purity:ptype( g, pchar).
-purity:ptype( h, pchar).
-purity:ptype( i, pchar).
-purity:ptype( j, pchar).
-purity:ptype( k, pchar).
-purity:ptype( l, pchar).
-purity:ptype( m, pchar).
-purity:ptype( n, pchar).
-purity:ptype( o, pchar).
-purity:ptype( p, pchar).
-purity:ptype( q, pchar).
-purity:ptype( r, pchar).
-purity:ptype( s, pchar).
-purity:ptype( t, pchar).
-purity:ptype( u, pchar).
-purity:ptype( v, pchar).
-purity:ptype( w, pchar).
-purity:ptype( x, pchar).
-purity:ptype( y, pchar).
-purity:ptype( z, pchar).
-purity:ptype( 'A', pchar).
-purity:ptype( 'B', pchar).
-purity:ptype( 'C', pchar).
-purity:ptype( 'D', pchar).
-purity:ptype( 'E', pchar).
-purity:ptype( 'F', pchar).
-purity:ptype( 'G', pchar).
-purity:ptype( 'H', pchar).
-purity:ptype( 'I', pchar).
-purity:ptype( 'J', pchar).
-purity:ptype( 'K', pchar).
-purity:ptype( 'L', pchar).
-purity:ptype( 'M', pchar).
-purity:ptype( 'N', pchar).
-purity:ptype( 'O', pchar).
-purity:ptype( 'P', pchar).
-purity:ptype( 'Q', pchar).
-purity:ptype( 'R', pchar).
-purity:ptype( 'S', pchar).
-purity:ptype( 'T', pchar).
-purity:ptype( 'U', pchar).
-purity:ptype( 'V', pchar).
-purity:ptype( 'W', pchar).
-purity:ptype( 'X', pchar).
-purity:ptype( 'Y', pchar).
-purity:ptype( 'Z', pchar).
-purity:ptype( ';', pchar).
-purity:ptype( ':', pchar).
-purity:ptype( '"', pchar).
-purity:ptype( '\'', pchar).
-purity:ptype( '\'', pchar).
-purity:ptype( '/', pchar).
-purity:ptype( '\\', pchar).
-purity:ptype( '<', pchar).
-purity:ptype( '>', pchar).
-purity:ptype( ',', pchar).
-purity:ptype( '.', pchar).
-purity:ptype( '!', pchar).
-purity:ptype( '@', pchar).
-purity:ptype( '#', pchar).
-purity:ptype( '$', pchar).
-purity:ptype( '%', pchar).
-purity:ptype( '^', pchar).
-purity:ptype( '&', pchar).
-purity:ptype( '*', pchar).
-purity:ptype( '(', pchar).
-purity:ptype( ')', pchar).
-purity:ptype( '[', pchar).
-purity:ptype( ']', pchar).
-purity:ptype( '{', pchar).
-purity:ptype( '}', pchar).
-purity:ptype( '|', pchar).
-purity:ptype( '-', pchar).
-purity:ptype( '_', pchar).
-purity:ptype( '+', pchar).
-purity:ptype( '=', pchar).
-purity:ptype( '0', pchar).
-purity:ptype( '1', pchar).
-purity:ptype( '2', pchar).
-purity:ptype( '3', pchar).
-purity:ptype( '4', pchar).
-purity:ptype( '5', pchar).
-purity:ptype( '6', pchar).
-purity:ptype( '7', pchar).
-purity:ptype( '8', pchar).
-purity:ptype( '9', pchar).
-purity:ptype( ' ', pchar).
-purity:ptype( '\n', pchar).
-purity:ptype( '\r', pchar).
-purity:ptype( '\t', pchar).
+ptype( a, pchar).
+ptype( b, pchar).
+ptype( c, pchar).
+ptype( d, pchar).
+ptype( e, pchar).
+ptype( f, pchar).
+ptype( g, pchar).
+ptype( h, pchar).
+ptype( i, pchar).
+ptype( j, pchar).
+ptype( k, pchar).
+ptype( l, pchar).
+ptype( m, pchar).
+ptype( n, pchar).
+ptype( o, pchar).
+ptype( p, pchar).
+ptype( q, pchar).
+ptype( r, pchar).
+ptype( s, pchar).
+ptype( t, pchar).
+ptype( u, pchar).
+ptype( v, pchar).
+ptype( w, pchar).
+ptype( x, pchar).
+ptype( y, pchar).
+ptype( z, pchar).
+ptype( 'A', pchar).
+ptype( 'B', pchar).
+ptype( 'C', pchar).
+ptype( 'D', pchar).
+ptype( 'E', pchar).
+ptype( 'F', pchar).
+ptype( 'G', pchar).
+ptype( 'H', pchar).
+ptype( 'I', pchar).
+ptype( 'J', pchar).
+ptype( 'K', pchar).
+ptype( 'L', pchar).
+ptype( 'M', pchar).
+ptype( 'N', pchar).
+ptype( 'O', pchar).
+ptype( 'P', pchar).
+ptype( 'Q', pchar).
+ptype( 'R', pchar).
+ptype( 'S', pchar).
+ptype( 'T', pchar).
+ptype( 'U', pchar).
+ptype( 'V', pchar).
+ptype( 'W', pchar).
+ptype( 'X', pchar).
+ptype( 'Y', pchar).
+ptype( 'Z', pchar).
+ptype( ';', pchar).
+ptype( ':', pchar).
+ptype( '"', pchar).
+ptype( '\'', pchar).
+ptype( '\'', pchar).
+ptype( '/', pchar).
+ptype( '\\', pchar).
+ptype( '<', pchar).
+ptype( '>', pchar).
+ptype( ',', pchar).
+ptype( '.', pchar).
+ptype( '!', pchar).
+ptype( '@', pchar).
+ptype( '#', pchar).
+ptype( '$', pchar).
+ptype( '%', pchar).
+ptype( '^', pchar).
+ptype( '&', pchar).
+ptype( '*', pchar).
+ptype( '(', pchar).
+ptype( ')', pchar).
+ptype( '[', pchar).
+ptype( ']', pchar).
+ptype( '{', pchar).
+ptype( '}', pchar).
+ptype( '|', pchar).
+ptype( '-', pchar).
+ptype( '_', pchar).
+ptype( '+', pchar).
+ptype( '=', pchar).
+ptype( '0', pchar).
+ptype( '1', pchar).
+ptype( '2', pchar).
+ptype( '3', pchar).
+ptype( '4', pchar).
+ptype( '5', pchar).
+ptype( '6', pchar).
+ptype( '7', pchar).
+ptype( '8', pchar).
+ptype( '9', pchar).
+ptype( ' ', pchar).
+ptype( '\n', pchar).
+ptype( '\r', pchar).
+ptype( '\t', pchar).
  
  % ch_map(Char, Lower, Upper).
  ch_map( a, a, 'A').

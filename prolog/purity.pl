@@ -1,22 +1,11 @@
-:- module(purity, [
-    pcompare/3,
-    ptype/2,
-    pif/3,
-    pdif_t/3,
-    pdif/2,
-    ','/3,
-    ';'/3,
-    '='/3,
-    '<'/3,
-    '<='/3,
-    '>'/3,
-    '>='/3
-]).
-
 :- multifile(pcompare/4).
 :- multifile(ptype/2).
+:- multifile(pcall/1).
+:- multifile(pcall/2).
 
-:- meta_predicate(pif(1, 0, 0)).
+pcall((A = B)) :- A = B.
+pcall((A , B)) :- A , B.
+pcall((A ; B)) :- A ; B.
 
 pcompare(A, B, C) :-
     ptype(A, T),
@@ -24,26 +13,26 @@ pcompare(A, B, C) :-
     pcompare(T, A, B, C).
 
 pif(Goal, TrueGoal, FalseGoal) :-
-    call(Goal, R),
+    pcall(Goal, R),
     pif_(R, TrueGoal, FalseGoal).
 
-pif_(true, Goal, _) :- call(Goal).
-pif_(false, _, Goal) :- call(Goal).
+pif_(true, Goal, _) :- pcall(Goal).
+pif_(false, _, Goal) :- pcall(Goal).
 
 ','(A, B, R) :-
-    call(A, T),
+    pcall(A, T),
     conj_(T, B, R).
 
 conj_(true, B, R) :-
-    call(B, R).
+    pcall(B, R).
 conj_(false, _, false).
 
 ';'(A, B, T) :-
-    call(A, T)
+    pcall(A, T)
     ; 
-    call(B, T).
+    pcall(B, T).
 
-pdif_t(A,B,R) :-
+pdif(A,B,R) :-
     pcompare(A,B,C),
     pdif_(C,R).
 
@@ -51,7 +40,7 @@ pdif_(=,false).
 pdif_(<,true).
 pdif_(>,true).
 
-pdif(A,B) :- pdif_t(A, B, true).
+pdif(A,B) :- pdif(A, B, true).
 
 =(A, B, T) :- compare_with_states(eq_, A, B, T).
 
@@ -85,5 +74,18 @@ gte_(>, true).
 
 compare_with_states(StateGoal, A, B, Truth) :-  
     pcompare(A, B, C),
-    call(StateGoal, C, Truth).
+    pcall(StateGoal, C, Truth).
+
+pcall(pdif(A,B), T) :- pdif(A,B,T).
+pcall((A = B), T) :- '='(A,B,T).
+pcall((A < B), T) :- '<'(A,B,T).
+pcall((A > B), T) :- '>'(A,B,T).
+pcall('<='(A, B), T) :- '<='(A,B,T).
+pcall('>='(A, B), T) :- '>='(A,B,T).
+
+pcall(eq_, C, T) :- eq_(C,T).
+pcall(lt_, C, T) :- lt_(C,T).
+pcall(gt_, C, T) :- gt_(C,T).
+pcall(gte_, C, T) :- gte_(C,T).
+pcall(lte_, C, T) :- lte_(C,T).
 

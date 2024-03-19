@@ -1,9 +1,5 @@
 % see https://en.wikipedia.org/wiki/Base64 for a description of how base64 works
-:- module(pbase64, [
-    codes_base64/2,
-    base64_codes/2
-]).
-	
+
 codes_base64([],[]).
 codes_base64([C1],[O1,O2,'=','=']) :-
 	code_byte( C1, byte(B0, B1, B2, B3, B4, B5, B6, B7) ),
