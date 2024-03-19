@@ -225,7 +225,7 @@ remove_dups_sorted([A|T],R) :-
 
 remove_dups_sorted_([],A,[A]).
 remove_dups_sorted_([B|T],A,R) :-
-    pdif_t(A,B,C),
+    pdif(A,B,C),
     remove_dups_sorted_(C,[A,B|T],R).
 
 remove_dups_sorted_(true,[A,B|T],[A|R]) :-
