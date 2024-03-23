@@ -1,4 +1,4 @@
-file_search_path(purity, '../prolog').
+file_search_path(purity, '../src').
 
 :- multifile(test/2).
 

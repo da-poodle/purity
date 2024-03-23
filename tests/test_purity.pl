@@ -2,42 +2,42 @@
 :- ensure_loaded(purity(pchar)).
 
 test(pif_eq, A) :-
-    pif(a = B, A = true, A = false),
-    B = a.
+    pif(eq(a, B), unify(A, true), unify(A, false)),
+    unify(B, a).
 
 test(pif_lt, A) :-
-    pif(a < b, A = true, A = false).
+    pif(lt(a, b), unify(A, true), unify(A, false)).
 
 test(pif_lt, A) :-
-    pif(b < a, A = false, A = true).
+    pif(lt(b, a), unify(A, false), unify(A, true)).
 
 test(pif_gt, A) :-
-    pif(b > a, A = true, A = false).
+    pif(gt(b, a), unify(A, true), unify(A, false)).
 
 test(pif_gt, A) :-
-    pif(a > b, A = false, A = true).
+    pif(gt(a, b), unify(A, false), unify(A, true)).
 
 test(pif_gte, A) :-
-    pif(a >= b, A = false, A = true).
+    pif(gte(a, b), unify(A, false), unify(A, true)).
 
 test(pif_gte, A) :-
-    pif(b >= a, A = true, A = false).
+    pif(gte(b, a), unify(A, true), unify(A, false)).
 
 test(pif_gte, A) :-
-    pif(a >= a, A = true, A = false).
+    pif(gte(a, a), unify(A, true), unify(A, false)).
 
 test(pif_lte, A) :-
-    pif('<='(a, b), A = true, A = false).
+    pif(lte(a, b), unify(A, true), unify(A, false)).
 
 test(pif_lte, A) :-
-    pif('<='(b, a), A = false, A = true).
+    pif(lte(b, a), unify(A, false), unify(A, true)).
 
 test(pif_lte, A) :-
-    pif('<='(a, a), A = true, A = false).
+    pif(lte(a, a), unify(A, true), unify(A, false)).
 
 test(pdif_dif, A) :-
-    pif(pdif(a, b), A = true, A = false).
+    pif(pdif(a, b), unify(A, true), unify(A, false)).
     
 test(pdif_eq, A) :-
-    pif(pdif(a, a), A = false, A = true).
+    pif(pdif(a, a), unify(A, false), unify(A, true)).
  
