@@ -4,18 +4,10 @@ mi(Goal) :-
         clause(Goal, Body),
         mi(Body).
 mi(true).
-mi(fail) :- fail.
 mi(','(A,B)) :-
         mi(A),
         mi(B).
-mi(';'(A,B)) :- 
-        mi(A) 
-        ; 
-        mi(B).
 
-unclausable(_ = _).
 unclausable((_,_)).
-unclausable((_;_)).
 unclausable(true).
-unclausable(fail).
     
