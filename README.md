@@ -15,6 +15,7 @@ Prolog was designed with a minimal set of operations and structures in mind, the
 - Compound terms
   - `a(b)`
   - `person('Fred', age(23), gender(male))`
+  - `[list, are, compound|Terms]`
 - Variables:
   - `A`
   - `Varname`
@@ -25,9 +26,9 @@ Prolog was designed with a minimal set of operations and structures in mind, the
 - Conjunctions:
   - A, B.
 - Disjunctions:
-  - A ; B.
-- True
-- Fail
+  - `term1(x). term1(y).`
+  - Note only disjunctions using the same term are allowed, and `A ; B` is not.
+- `true`
 
 The modern Prolog language has added a number of new operations on top of these, but they all involve using the cut (!) operator, which is impure.
 

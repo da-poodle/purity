@@ -6,8 +6,6 @@ A domain contains facts and rules about a particular type of knowledge. From Pur
 
 The following domains come standard with the Purity library:
 
-- `pbool` - boolean operators of which can be `true` or `false`
-
 - `pchar` - A domain containing the following characters:
 
   - The character set `[a-zA-Z0-9]`

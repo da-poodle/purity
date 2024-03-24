@@ -2,16 +2,6 @@ Up: [Purity](intro.md)
 
 ## List Predicates
 
-To use, import the following module
-
-    :- use_module(library(purity)).
-
-### plist/1
-
-    plist(L).
-
-holds if L is a valid list
-
 ### plength/2
 
     plength(List, Length).
@@ -36,9 +26,18 @@ Nth is a punary number.
 
 ### pmemberchk/3
 
-    pmemberchk(Domain, Element, List).
+    pmemberchk(Element, List, Truth).
 
 check if Element exists in List once only.
+
+Truth is true if the element exits.
+Truth is false if the element is not in the list.
+
+### pmemberchk/3
+
+    pmemberchk(Element, List).
+
+Equivilent of `pmemberchk(Element, List, true)`.
 
 ### psublist/5
 

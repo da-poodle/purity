@@ -123,9 +123,15 @@ pcall(gt(A,B), T) :- gt(A,B,T).
 pcall(lte(A, B), T) :- lte(A,B,T).
 pcall(gte(A, B), T) :- gte(A,B,T).
 
+pcall(pdif(A), B, T) :- pdif(A,B,T).
+pcall(eq(A), B, T) :- eq(A,B,T).
+pcall(lt(A), B, T) :- lt(A,B,T).
+pcall(gt(A), B, T) :- gt(A,B,T).
+pcall(lte(A), B, T) :- lte(A,B,T).
+pcall(gte(A), B, T) :- gte(A,B,T).
+
 pcall(eq_, C, T) :- eq_(C,T).
 pcall(lt_, C, T) :- lt_(C,T).
 pcall(gt_, C, T) :- gt_(C,T).
 pcall(gte_, C, T) :- gte_(C,T).
 pcall(lte_, C, T) :- lte_(C,T).
-

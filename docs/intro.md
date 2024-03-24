@@ -27,7 +27,7 @@ To get the module version, read the quick start on how to install the SWI-Prolog
 The library API is getting bigger all the time, and so far the following is available
 
 - [Domains](api_domains.md)
-- [Comparison](api_comparison.md)
+- [Core](api_purity.md)
 - [Characters](api_characters.md)
 - [Strings](api_strings.md)
 - [Lists](api_lists.md)

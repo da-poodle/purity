@@ -1,7 +1,3 @@
-:- ensure_loaded(purity).
-:- ensure_loaded(pchar).
-:- ensure_loaded(plist).
-
 % pstr_upper(String, Upper).
 pstr_upper([], []).
 pstr_upper([C|T], [U|R]) :-
@@ -61,7 +57,7 @@ pstr_split(A, D, B) :-
 
 pstr_split_([], _, []).
 pstr_split_([A|T], D, Split) :-
-    pdif_t(A,D,B),
+    pdif(A,D,B),
     pstr_split(B,A,T,D,Split).
 
 pstr_split(false, D, T, D, Split) :-
@@ -72,7 +68,7 @@ pstr_split(true, A, T, D, [S|Rest]) :-
 
 find_split([], _, [], []).
 find_split([A|T], D, Rem, Split) :-
-    pdif_t(A,D,B),
+    pdif(A,D,B),
     find_split(B, A, T, D, Rem, Split).
 
 find_split(false, D, T, D, T, []).
@@ -102,8 +98,8 @@ pstr_contains(String, SubString) :-
     pstr_contains_t(String, SubString, true).
 
 % pstr_contains(String, SubString, Contains).
-pstr_contains_t([], _, false). 
-pstr_contains_t([A|T], B, C) :-
+pstr_contains([], _, false). 
+pstr_contains([A|T], B, C) :-
     pstr_prefix_t(B, [A|T], Prefix),
     pstr_contains_(Prefix, [A|T], B, C).
 
