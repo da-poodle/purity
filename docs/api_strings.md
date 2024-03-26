@@ -2,15 +2,7 @@ Up: [Purity](intro.md)
 
 ## String Predicates
 
-To use, import the following module
-
-    :- use_module(library(purity)).
-
-### pstr_empty/1
-
-    pstr_empty(Str).
-
-Str is an empty string
+String manipulation library.
 
 ### pstr_upper/2
 

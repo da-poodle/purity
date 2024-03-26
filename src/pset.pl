@@ -1,23 +1,13 @@
-:- module(pset, [
-    pset_empty/1,
-    list_set/2,
-    set_list/2,
-    subset_t/3,
-    punion/3,
-    pdifference/3,
-    pintersection/3
-]).
+:- ensure_loaded(purity).
+:- ensure_loaded(plist).
 
-:- use_module(purity).
-:- use_module(plist).
+:- multifile(pcompare/4).
+:- multifile(ptype/2).
 
-:- multifile(purity:pcompare/4).
-:- multifile(purity:ptype/2).
+ptype(pset([]), pset).
+ptype(pset([_,_]), pset).
 
-purity:ptype(pset([]), pset).
-purity:ptype(pset([_,_]), pset).
-
-purity:pcompare(pset, pset(A), pset(B), C) :-
+pcompare(pset, pset(A), pset(B), C) :-
     % compare list contents
     pcompare(A, B, C).
 

@@ -1,10 +1,8 @@
 Up: [Purity](intro.md)
 
-## pchar Domain
+# pchar Domain
 
-To use, import the following module
-
-    :- use_module(library(pstring)).
+The `pchar` domain considers characters.
 
 ## Character Predicates
 

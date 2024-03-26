@@ -1,9 +1,20 @@
-% see https://en.wikipedia.org/wiki/Base64 for a description of how base64 works
-:- module(pbase64, [
-    codes_base64/2,
-    base64_codes/2
-]).
-	
+/*
+ Pure Prolog base64 converter
+
+ see https://en.wikipedia.org/wiki/Base64 for a description of how base64 works
+
+ Convert to base64:
+    codes_base64(ListOfCodes, Base64).
+
+ Convert from base64:
+  base64_codes(Base64, ListOfCodes).
+
+ Raw data must be in codes, the base64 uses characters.
+ Conversion can be done using the pchar library.  
+
+ Note that these methods are reversable, but there are two for effeciency reasons.
+*/
+
 codes_base64([],[]).
 codes_base64([C1],[O1,O2,'=','=']) :-
 	code_byte( C1, byte(B0, B1, B2, B3, B4, B5, B6, B7) ),
@@ -31,12 +42,12 @@ codes_base64([C1,C2,C3|Ct],[O1,O2,O3,O4|Ot]) :-
 	codes_base64(Ct,Ot).
 
 base64_codes([],[]).
-base64_codes([C1],[O1,O2,'=','=']) :-
+base64_codes([O1,O2,'=','='],[C1]) :-
 	code_b64( [B0, B1, B2, B3, B4, B5 ], O1 ),
 	code_b64( [B6, B7, 0,  0,  0,  0  ], O2 ),
 	code_byte( C1, byte(B0, B1, B2, B3, B4, B5, B6, B7) ).
 
-base64_codes([C1,C2],[O1,O2,O3,'=']) :-
+base64_codes([O1,O2,O3,'='], [C1,C2]) :-
 	code_b64( [B0, B1, B2, B3, B4, B5 ], O1 ),
 	code_b64( [B6, B7, B8, B9, B10,B11], O2 ),
 	code_b64( [B12,B13,B14,B15,0,  0  ], O3 ),
@@ -44,7 +55,7 @@ base64_codes([C1,C2],[O1,O2,O3,'=']) :-
     code_byte( C1, byte(B0, B1, B2, B3, B4, B5, B6, B7) ),
 	code_byte( C2, byte(B8, B9, B10,B11,B12,B13,B14,B15) ).
 
-base64_codes([C1,C2,C3|Ct],[O1,O2,O3,O4|Ot]) :-
+base64_codes([O1,O2,O3,O4|Ot], [C1,C2,C3|Ct]) :-
 	code_b64( [B0, B1, B2, B3, B4, B5 ], O1 ),	
 	code_b64( [B6, B7, B8, B9, B10,B11], O2 ),
 	code_b64( [B12,B13,B14,B15,B16,B17], O3 ),	
@@ -54,7 +65,7 @@ base64_codes([C1,C2,C3|Ct],[O1,O2,O3,O4|Ot]) :-
 	code_byte( C2, byte(B8, B9, B10,B11,B12,B13,B14,B15) ),
 	code_byte( C3, byte(B16,B17,B18,B19,B20,B21,B22,B23) ),
 
-	base64_codes(Ct,Ot).
+	base64_codes(Ot, Ct).
 
 
 code_byte( 0,   byte(0,0,0,0,0,0,0,0) ).
