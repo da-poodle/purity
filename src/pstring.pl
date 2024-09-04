@@ -17,8 +17,8 @@ pstr_replace([A|T], F, R, Rp) :-
     pstr_replace_(IsPrefix, [A|T], F, R, Rp).
 
 pstr_replace_(true, Orig, F, R, Rp) :-
-    append(F, Remaining, Orig),
-    append(R, Remaining, Rp).
+    pappend(F, Remaining, Orig),
+    pappend(R, Remaining, Rp).
 pstr_replace_(false, [A|T], F, R, [A|Rpt]) :-
     pstr_replace(T, F, R, Rpt).
 

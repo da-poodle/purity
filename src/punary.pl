@@ -87,7 +87,7 @@ unary_10( c(c(c(c(c(c(c(c(c(c(zero)))))))))) ).
 	
 % string_unary(String, Unary).
 string_unary(D, C) :- 
-	reverse(D, DR),
+	preverse(D, DR),
 	u_dec_unary_(DR, c(zero), zero, C).
 
 u_dec_unary_([], _, Sum, Sum).
@@ -105,7 +105,7 @@ u_dec_unary_([D|T], Mult, Sum, R) :-
 % unary_string(Unary, String).
 unary_string(U, S) :- 
 	u_unary_dec(U, c(zero), R),
-	reverse(R, S).
+	preverse(R, S).
 
 u_unary_dec(zero, _, []).
 u_unary_dec(c(Z), Mul, [V|T]) :-

@@ -90,7 +90,7 @@ psublist_([A|T], c(Len), End, [A|St]) :-
 % remove_dups(List, NoDups).
 remove_dups([],[]).
 remove_dups([A|T],R) :-
-	member(A,T),
+	pmember(A,T),
 	remove_dups(T,R).
 remove_dups([A|T],[A|R]) :-
 	non_member(A,T),
@@ -105,10 +105,10 @@ list_join([E|T], Prev, Dl, Rl) :-
     list_join2(T, E, Prev, Dl, Rl).
 
 list_join2([], E, Prev, _, Rl) :-
-    append(Prev, E, Rl).
+    pappend(Prev, E, Rl).
 list_join2([E2|T], E, Prev, Dl, Rl) :-
-    append(Prev, E, PrevE),
-    append(PrevE, Dl, Joined),
+    pappend(Prev, E, PrevE),
+    pappend(PrevE, Dl, Joined),
     list_join([E2|T], Joined, Dl, Rl).
 
 
@@ -148,7 +148,7 @@ pexclude(G, L, E) :-
 
 % psort(Domain, List, Sordered)
 psort(L, S) :-
-	same_length(L, S),
+	psame_length(L, S),
     psort_(L, S).
 
 psort_([], []).
@@ -233,57 +233,62 @@ remove_dups_sorted_(true,[A,B|T],[A|R]) :-
 remove_dups_sorted_(false,[A,A|T],R) :-
     remove_dups_sorted([A|T],R).
 
-/*
 
-These predicates apply to a prolog system that doesn't have inbuilt library predicates.
+% pmember/2
+pmember(A,[A|_]).
+pmember(A,[_|T]) :-
+    pmember(A,T).
 
-% member/2
-member(A,[A|_]).
-member(A,[_|T]) :-
-    member(A,T).
+% pappend/3
+pappend([], A, A).
+pappend([A|B], C, [A|D]) :-
+    pappend(B, C, D).
 
-% append/3
-append([], A, A).
-append([A|B], C, [A|D]) :-
-    append(B, C, D).
+% pappend/2
+pappend(ListOfLists, List) :-
+    is_list(ListOfLists),    
+    pappend_(ListOfLists, List).
 
-% select/3
-select(A, [A|B], B).
-select(B, [A|C], [A|D]) :-
-    select(B, C, D).
+pappend_([], []).
+pappend_([L|Ls], As) :-
+    pappend(L, Ws, As),
+    pappend_(Ls, Ws).
 
-% select/4
-select(A,[A|C], B, [B|C]).
-select(C, [A|B], D, [A|E]) :-
-    select(C, B, D, E).
+% pselect/3
+pselect(A, [A|B], B).
+pselect(B, [A|C], [A|D]) :-
+    pselect(B, C, D).
 
-% reverse/2
+% pselect/4
+pselect(A,[A|C], B, [B|C]).
+pselect(C, [A|B], D, [A|E]) :-
+    pselect(C, B, D, E).
+
+% preverse/2
 % solution taken from https://courses.cs.washington.edu/courses/cse341/10wi/clpr/difference_lists.clpr
 preverse(Xs,Rs) :- reverse_dl(Xs,Rs-[]).
 
 reverse_dl([],T-T).
 reverse_dl([X|Xs],Rs-T) :- reverse_dl(Xs,Rs-[X|T]).
 
-% permutation/2
-permutation([],[]).
-permutation(A,[E|R]) :-
-	select(E,A,B),
-	permutation(B,R).
+% ppermutation/2
+ppermutation([],[]).
+ppermutation(A,[E|R]) :-
+	pselect(E,A,B),
+	ppermutation(B,R).
 
-% last/2
-last([A],A).
-last([_|T],A) :-
-    last(T,A).
+% plast/2
+plast([A],A).
+plast([_|T],A) :-
+    plast(T,A).
 
 
-% prefix/2
-prefix([], _).
-prefix([A|B], [A|C]) :-
-    prefix(B, C).
+% pprefix/2
+pprefix([], _).
+pprefix([A|B], [A|C]) :-
+    pprefix(B, C).
 
-% same_length
+% psame_length
 psame_length([],[]).
 psame_length([_|A],[_|B]) :-
     psame_length(A,B).
-*/
-
