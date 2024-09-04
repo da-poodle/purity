@@ -1,6 +1,6 @@
 % Reverse a list
 preverse(Xs, Ys) :-
-    same_length(Xs, Ys),
+    psame_length(Xs, Ys),
     preverse(Xs, [], Ys, Ys).
 
 preverse([], Ys, Ys, []).
